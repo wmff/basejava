@@ -5,52 +5,52 @@ import java.util.Arrays;
  */
 public class ArrayStorage {
 
-    Resume[] storage = new Resume[10000];
-    private int resumeCount;
+    private final Resume[] storage = new Resume[10000];
+    private int storageSize;
 
-    public ArrayStorage() {
-        resumeCount = 1;
-    }
-
-    public void clear() {
-        for (int i = 0; i < resumeCount - 1; i++) {
+    void clear() {
+        for (int i = 0; i < storageSize; i++) {
             storage[i] = null;
         }
-        resumeCount = 1;
+        storageSize = 0;
     }
 
-    public void save(Resume r) {
-        storage[resumeCount - 1] = r;
-        resumeCount++;
+    void save(Resume r) {
+        storage[storageSize] = r;
+        storageSize++;
     }
 
-    public Resume get(String uuid) {
-        for (int i = 0; i < resumeCount - 1; i++) {
+    Resume get(String uuid) {
+        for (int i = 0; i < storageSize; i++) {
             if (storage[i].uuid.equals(uuid)) {
                 return storage[i];
             }
         }
-        return null;
+        return new Resume();
     }
 
-    public void delete(String uuid) {
-        for (int i = 0; i < resumeCount - 1; i++) {
+    void delete(String uuid) {
+        for (int i = 0; i < storageSize; i++) {
             if (storage[i].uuid.equals(uuid)) {
-                storage[i] = null;
+                storage[i] = storage[storageSize - 1];
+                storage[storageSize - 1] = null;
+                storageSize--;
             }
         }
-        Arrays.sort(storage, new ResumeComparator());
-        resumeCount--;
     }
 
     /**
      * @return array, contains only Resumes in storage (without null)
      */
-    public Resume[] getAll() {
-        return Arrays.copyOf(storage, resumeCount - 1);
+    Resume[] getAll() {
+        if (storageSize > 0) {
+            return Arrays.copyOf(storage, storageSize);
+        } else {
+            return new Resume[0];
+        }
     }
 
-    public int size() {
-        return resumeCount - 1;
+    int size() {
+        return storageSize;
     }
 }
