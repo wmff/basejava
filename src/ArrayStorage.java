@@ -26,7 +26,7 @@ public class ArrayStorage {
                 return storage[i];
             }
         }
-        return new Resume();
+        return null;
     }
 
     void delete(String uuid) {
@@ -43,11 +43,7 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll() {
-        if (storageSize > 0) {
-            return Arrays.copyOf(storage, storageSize);
-        } else {
-            return new Resume[0];
-        }
+        return Arrays.copyOf(storage, storageSize);
     }
 
     int size() {
