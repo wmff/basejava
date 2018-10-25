@@ -5,7 +5,8 @@ import java.util.Arrays;
  */
 public class ArrayStorage {
 
-    private final Resume[] storage = new Resume[10_000];
+    private static final int STORAGE_LIMIT = 10_000;
+    private final Resume[] storage = new Resume[STORAGE_LIMIT];
     private int storageSize;
 
     void clear() {
@@ -61,7 +62,7 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll() {
-        return Arrays.copyOf(storage, storageSize);
+        return Arrays.copyOfRange(storage, 0, storageSize);
     }
 
     int size() {
