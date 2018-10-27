@@ -9,7 +9,7 @@ import java.util.Arrays;
  */
 public abstract class AbstractArrayStorage implements Storage {
 
-    protected static final int STORAGE_LIMIT = 10_000;
+    protected static final int STORAGE_LIMIT = 4;
 
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
@@ -24,12 +24,10 @@ public abstract class AbstractArrayStorage implements Storage {
 
         if (index >= 0) {
             System.out.println("Resume uuid=" + r.getUuid() + " already exist");
-        } else if (isStorageNotOverflow()) {
-            if (index == -STORAGE_LIMIT) {
-                saveInStorage(r, size);
-            } else {
-                saveInStorage(r, index);
-            }
+        } else if (size == STORAGE_LIMIT) {
+            System.out.println("Storage overflow");
+        } else {
+            saveInStorage(r, index);
             size++;
         }
     }
@@ -51,6 +49,7 @@ public abstract class AbstractArrayStorage implements Storage {
             System.out.println("Resume uuid=" + uuid + " not exist");
         } else {
             deleteFromStorage(index);
+            storage[size - 1] = null;
             size--;
         }
     }
@@ -78,13 +77,4 @@ public abstract class AbstractArrayStorage implements Storage {
     protected abstract void saveInStorage(Resume r, int index);
 
     protected abstract void deleteFromStorage(int index);
-
-    private boolean isStorageNotOverflow() {
-        if (size >= STORAGE_LIMIT) {
-            System.out.println("Storage overflow");
-            return false;
-        } else {
-            return true;
-        }
-    }
 }
