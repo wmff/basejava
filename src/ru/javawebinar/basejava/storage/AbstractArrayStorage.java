@@ -17,6 +17,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage implements St
     protected final Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
 
+    @Override
     public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
@@ -74,7 +75,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage implements St
         return size;
     }
 
-    protected abstract int getIndex(String uuid);
+//    protected abstract int getIndex(String uuid);
 
     protected abstract void saveInStorage(Resume r, int index);
 
