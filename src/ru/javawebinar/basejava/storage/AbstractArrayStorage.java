@@ -15,36 +15,41 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     final Resume[] storage = new Resume[STORAGE_LIMIT];
     int size = 0;
 
+    @Override
+    protected boolean isExist(Object index) {
+        return (Integer) index >= 0;
+    }
+
     public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
     }
 
     @Override
-    public void doSave(Resume r, Integer index) {
+    public void doSave(Resume r, Object searchKey) {
         if (size == STORAGE_LIMIT) {
             throw new StorageException("Storage overflow", r.getUuid());
         } else {
-            saveInStorage(r, index);
+            saveInStorage(r, (int) searchKey);
             size++;
         }
     }
 
     @Override
-    public Resume doGet(String uuid, int index) {
-        return storage[index];
+    public Resume doGet(String uuid, Object searchKey) {
+        return storage[(int) searchKey];
     }
 
     @Override
-    public void doDelete(String uuid, int index) {
-        deleteFromStorage(index);
+    public void doDelete(String uuid, Object searchKey) {
+        deleteFromStorage((int) searchKey);
         storage[size - 1] = null;
         size--;
     }
 
     @Override
-    public void doUpdate(Resume r, int index) {
-        storage[index] = r;
+    public void doUpdate(Resume r, Object searchKey) {
+        storage[(int) searchKey] = r;
     }
 
     public Resume[] getAll() {
@@ -55,7 +60,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return size;
     }
 
-    protected abstract void saveInStorage(Resume r, Integer index);
+    protected abstract void saveInStorage(Resume r, int index);
 
     protected abstract void deleteFromStorage(int index);
 }
