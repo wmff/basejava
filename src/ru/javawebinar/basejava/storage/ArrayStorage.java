@@ -26,6 +26,4 @@ public class ArrayStorage extends AbstractArrayStorage {
     protected void deleteFromStorage(int index) {
         storage[index] = storage[size - 1];
     }
-
-
 }
