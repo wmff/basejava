@@ -11,6 +11,21 @@ abstract class AbstractStorage implements Storage {
         doSave(r, searchKey);
     }
 
+    public Resume get(String uuid) {
+        Object searchKey = getExistSearchKey(uuid);
+        return doGet(searchKey);
+    }
+
+    public void delete(String uuid) {
+        Object searchKey = getExistSearchKey(uuid);
+        doDelete(searchKey);
+    }
+
+    public void update(Resume r) {
+        Object searchKey = getExistSearchKey(r.getUuid());
+        doUpdate(r, searchKey);
+    }
+
     private Object getExistSearchKey(String uuid) {
         Object searchKey = getSearchKey(uuid);
         if (!isExist(searchKey)) {
@@ -27,30 +42,15 @@ abstract class AbstractStorage implements Storage {
         return searchKey;
     }
 
-    public Resume get(String uuid) {
-        Object searchKey = getExistSearchKey(uuid);
-        return doGet(uuid, searchKey);
-    }
-
-    public void delete(String uuid) {
-        Object searchKey = getExistSearchKey(uuid);
-        doDelete(uuid, searchKey);
-    }
-
-    public void update(Resume r) {
-        Object searchKey = getExistSearchKey(r.getUuid());
-        doUpdate(r, searchKey);
-    }
-
     protected abstract Object getSearchKey(String uuid);
 
     protected abstract boolean isExist(Object searchKey);
 
     protected abstract void doSave(Resume r, Object searchKey);
 
-    protected abstract Resume doGet(String uuid, Object searchKey);
+    protected abstract Resume doGet(Object searchKey);
 
-    protected abstract void doDelete(String uuid, Object searchKey);
+    protected abstract void doDelete(Object searchKey);
 
     protected abstract void doUpdate(Resume r, Object searchKey);
 }

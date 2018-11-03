@@ -33,12 +33,12 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume doGet(String uuid, Object searchKey) {
+    protected Resume doGet(Object searchKey) {
         return list.get((int) searchKey);
     }
 
     @Override
-    public void doDelete(String uuid, Object searchKey) {
+    public void doDelete(Object searchKey) {
         list.remove((int) searchKey);
     }
 

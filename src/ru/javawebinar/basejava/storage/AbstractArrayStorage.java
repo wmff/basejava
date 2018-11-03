@@ -36,12 +36,12 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume doGet(String uuid, Object searchKey) {
+    public Resume doGet(Object searchKey) {
         return storage[(int) searchKey];
     }
 
     @Override
-    public void doDelete(String uuid, Object searchKey) {
+    public void doDelete(Object searchKey) {
         deleteFromStorage((int) searchKey);
         storage[size - 1] = null;
         size--;

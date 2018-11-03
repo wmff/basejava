@@ -15,12 +15,13 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected Object getSearchKey(String uuid) {
-        return map.containsKey(uuid) ? uuid : null;
+        return uuid;
     }
 
     @Override
     protected boolean isExist(Object searchKey) {
-        return searchKey != null;
+        //noinspection SuspiciousMethodCalls
+        return map.containsKey(searchKey);
     }
 
     @Override
@@ -29,12 +30,14 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume doGet(String uuid, Object searchKey) {
-        return map.get(uuid);
+    public Resume doGet(Object searchKey) {
+        //noinspection SuspiciousMethodCalls
+        return map.get(searchKey);
     }
 
     @Override
-    public void doDelete(String uuid, Object searchKey) {
+    public void doDelete(Object searchKey) {
+        //noinspection SuspiciousMethodCalls
         map.remove(searchKey);
     }
 
