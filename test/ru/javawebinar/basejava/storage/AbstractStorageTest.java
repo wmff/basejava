@@ -6,17 +6,22 @@ import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
-import static org.junit.Assert.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 public abstract class AbstractStorageTest {
     final Storage storage;
 
-    protected static final String UUID_5 = "uuid5";
-    protected static final Resume RESUME_5 = new Resume(UUID_5);
-    protected static final String UUID_6 = "uuid6";
-    protected static final Resume RESUME_6 = new Resume(UUID_6);
+    private static final String UUID_5 = "uuid5";
+    private static final String FULL_NAME = "full name";
+    static final Resume RESUME_5 = new Resume(UUID_5, FULL_NAME);
+    private static final String UUID_6 = "uuid6";
+    private static final Resume RESUME_6 = new Resume(UUID_6, FULL_NAME);
 
-    protected AbstractStorageTest(Storage storage) {
+    AbstractStorageTest(Storage storage) {
         this.storage = storage;
     }
 
@@ -24,7 +29,7 @@ public abstract class AbstractStorageTest {
     public void setUp() {
         storage.clear();
         for (int i = 0; i < 5; i++) {
-            storage.save(new Resume("uuid" + (i + 1)));
+            storage.save(new Resume("uuid" + (i + 1), FULL_NAME));
         }
     }
 
@@ -81,13 +86,14 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void getAll() {
-        Resume[] allResume = storage.getAll();
-        Resume[] testResume = new Resume[5];
+        List<Resume> allResume = storage.getAllSorted();
+        List<Resume> testResume = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            testResume[i] = new Resume("uuid" + (i + 1));
+            testResume.add(new Resume("uuid" + (i + 1), FULL_NAME));
         }
-        assertEquals(testResume.length, allResume.length);
-        assertArrayEquals(allResume, testResume);
+        assertEquals(testResume.size(), allResume.size());
+//        assertArrayEquals(allResume, testResume);
+        assertEquals(testResume, allResume);
     }
 
     @Test

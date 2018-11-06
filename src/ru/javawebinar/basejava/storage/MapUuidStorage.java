@@ -2,11 +2,11 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.model.Resume;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MapStorage extends AbstractStorage {
+public class MapUuidStorage extends AbstractStorage {
     private static final Map<String, Resume> map = new HashMap<>();
 
     public void clear() {
@@ -46,10 +46,9 @@ public class MapStorage extends AbstractStorage {
         map.put((String) searchKey, r);
     }
 
-    public Resume[] getAll() {
-        Resume[] resumeArray = map.values().toArray(new Resume[size()]);
-        Arrays.sort(resumeArray);
-        return resumeArray;
+    @Override
+    protected ArrayList<Resume> doGetAll() {
+        return new ArrayList<>(map.values());
     }
 
     public int size() {

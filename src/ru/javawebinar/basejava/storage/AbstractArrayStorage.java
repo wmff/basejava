@@ -4,14 +4,13 @@ import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Array based storage for Resumes
  */
 public abstract class AbstractArrayStorage extends AbstractStorage {
-
     static final int STORAGE_LIMIT = 10_000;
-
     final Resume[] storage = new Resume[STORAGE_LIMIT];
     int size = 0;
 
@@ -52,8 +51,9 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         storage[(int) searchKey] = r;
     }
 
-    public Resume[] getAll() {
-        return Arrays.copyOfRange(storage, 0, size);
+    @Override
+    public List<Resume> doGetAll() {
+        return Arrays.asList(Arrays.copyOfRange(storage, 0, size()));
     }
 
     public int size() {

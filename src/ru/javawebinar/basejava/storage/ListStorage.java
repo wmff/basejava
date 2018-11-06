@@ -47,8 +47,9 @@ public class ListStorage extends AbstractStorage {
         list.set((int) searchKey, r);
     }
 
-    public Resume[] getAll() {
-        return list.toArray(new Resume[size()]);
+    @Override
+    protected List<Resume> doGetAll() {
+        return list;
     }
 
     public int size() {
