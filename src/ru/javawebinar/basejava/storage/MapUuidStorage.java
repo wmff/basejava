@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MapUuidStorage extends AbstractStorage {
+public class MapUuidStorage extends AbstractStorage<String> {
     private static final Map<String, Resume> map = new HashMap<>();
 
     public void clear() {
@@ -14,40 +14,37 @@ public class MapUuidStorage extends AbstractStorage {
     }
 
     @Override
-    protected Object getSearchKey(String uuid) {
+    protected String getSearchKey(String uuid) {
         return uuid;
     }
 
     @Override
-    protected boolean isExist(Object searchKey) {
-        //noinspection SuspiciousMethodCalls
+    protected boolean isExist(String searchKey) {
         return map.containsKey(searchKey);
     }
 
     @Override
-    protected void doSave(Resume r, Object searchKey) {
+    protected void doSave(Resume r, String searchKey) {
         map.put(r.getUuid(), r);
     }
 
     @Override
-    public Resume doGet(Object searchKey) {
-        //noinspection SuspiciousMethodCalls
+    public Resume doGet(String searchKey) {
         return map.get(searchKey);
     }
 
     @Override
-    public void doDelete(Object searchKey) {
-        //noinspection SuspiciousMethodCalls
+    public void doDelete(String searchKey) {
         map.remove(searchKey);
     }
 
     @Override
-    public void doUpdate(Resume r, Object searchKey) {
-        map.put((String) searchKey, r);
+    public void doUpdate(Resume r, String searchKey) {
+        map.put(searchKey, r);
     }
 
     @Override
-    protected ArrayList<Resume> doGetAll() {
+    protected ArrayList<Resume> doCopyAll() {
         return new ArrayList<>(map.values());
     }
 

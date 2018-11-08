@@ -9,14 +9,14 @@ import java.util.List;
 /**
  * Array based storage for Resumes
  */
-public abstract class AbstractArrayStorage extends AbstractStorage {
+public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     static final int STORAGE_LIMIT = 10_000;
     final Resume[] storage = new Resume[STORAGE_LIMIT];
     int size = 0;
 
     @Override
-    protected boolean isExist(Object index) {
-        return (Integer) index >= 0;
+    protected boolean isExist(Integer index) {
+        return index >= 0;
     }
 
     public void clear() {
@@ -25,34 +25,34 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public void doSave(Resume r, Object searchKey) {
+    public void doSave(Resume r, Integer searchKey) {
         if (size == STORAGE_LIMIT) {
             throw new StorageException("Storage overflow", r.getUuid());
         } else {
-            saveInStorage(r, (int) searchKey);
+            saveInStorage(r, searchKey);
             size++;
         }
     }
 
     @Override
-    public Resume doGet(Object searchKey) {
-        return storage[(int) searchKey];
+    public Resume doGet(Integer searchKey) {
+        return storage[searchKey];
     }
 
     @Override
-    public void doDelete(Object searchKey) {
-        deleteFromStorage((int) searchKey);
+    public void doDelete(Integer searchKey) {
+        deleteFromStorage(searchKey);
         storage[size - 1] = null;
         size--;
     }
 
     @Override
-    public void doUpdate(Resume r, Object searchKey) {
-        storage[(int) searchKey] = r;
+    public void doUpdate(Resume r, Integer searchKey) {
+        storage[searchKey] = r;
     }
 
     @Override
-    public List<Resume> doGetAll() {
+    public List<Resume> doCopyAll() {
         return Arrays.asList(Arrays.copyOfRange(storage, 0, size()));
     }
 
