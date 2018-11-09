@@ -31,6 +31,31 @@ public class Resume implements Comparable<Resume> {
         return fullName;
     }
 
+    public void addContact(ContactType type, String value) {
+        contacts.put(type, value);
+    }
+
+    public void deleteContact(ContactType type) {
+        contacts.remove(type);
+    }
+
+    public void updateContact(ContactType type, String value) {
+        contacts.put(type, value);
+    }
+
+    public Map<ContactType, String> getContacts() {
+        return contacts;
+    }
+
+
+    public void addSection(SectionType type, Section section) {
+        sections.put(type, section);
+    }
+
+    public Section getSection(SectionType type) {
+        return sections.get(type);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
