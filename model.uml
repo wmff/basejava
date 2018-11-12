@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>ru.javawebinar.basejava.model</OriginalElement>
+  <nodes>
+    <node x="0.0" y="494.0">ru.javawebinar.basejava.model.TextSection</node>
+    <node x="321.5" y="413.0">ru.javawebinar.basejava.model.Section</node>
+    <node x="0.0" y="0.0">ru.javawebinar.basejava.model.Resume</node>
+    <node x="249.0" y="494.5">ru.javawebinar.basejava.model.ListSection</node>
+    <node x="513.0" y="506.0">ru.javawebinar.basejava.model.Organization</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="ru.javawebinar.basejava.model.Organization" target="ru.javawebinar.basejava.model.Section">
+      <point x="0.0" y="-64.0" />
+      <point x="669.5" y="469.0" />
+      <point x="404.0" y="469.0" />
+      <point x="33.0" y="15.5" />
+    </edge>
+    <edge source="ru.javawebinar.basejava.model.TextSection" target="ru.javawebinar.basejava.model.Section">
+      <point x="0.0" y="-76.0" />
+      <point x="114.5" y="469.0" />
+      <point x="338.0" y="469.0" />
+      <point x="-33.0" y="15.5" />
+    </edge>
+    <edge source="ru.javawebinar.basejava.model.ListSection" target="ru.javawebinar.basejava.model.Section">
+      <point x="0.0" y="-75.5" />
+      <point x="0.0" y="15.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="624.5" y="273.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>public</VISIBILITY>
+</Diagram>
+

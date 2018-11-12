@@ -47,13 +47,16 @@ public class Resume implements Comparable<Resume> {
         return contacts;
     }
 
-
     public void addSection(SectionType type, Section section) {
         sections.put(type, section);
     }
 
     public Section getSection(SectionType type) {
         return sections.get(type);
+    }
+
+    public void upddateSection(SectionType type, Section section) {
+        sections.put(type, section);
     }
 
     @Override

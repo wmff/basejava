@@ -19,7 +19,6 @@ public class ResumeTestData {
     private static final Organization ORG3 = new Organization("Coursera", "03/2013", "05/2013");
     private static final Organization ORG4 = new Organization("Luxsoft", "03/2011", "04/2011");
 
-
     static {
         ACHIEVEMENT.addContent("С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.");
         ACHIEVEMENT.addContent("Реализация двухфакторной аутентификации для онлайн платформы управления проектами Wrike. Интеграция с Twilio, DuoSecurity, Google Authenticator, Jira, Zendesk.");
@@ -40,7 +39,6 @@ public class ResumeTestData {
     }
 
     public static void main(String[] args) {
-
         RESUME.addContact(ContactType.PHONE, "+7(921)855-04-82");
         RESUME.addContact(ContactType.SKYPE, "grigory.kislin");
         RESUME.addContact(ContactType.EMAIL, "gkislin@yandex.ru");
@@ -55,7 +53,6 @@ public class ResumeTestData {
         RESUME.addSection(SectionType.QUALIFICATIONS, QUALIFICATIONS);
         RESUME.addSection(SectionType.EXPERIENCE, EXPERIENCE);
         RESUME.addSection(SectionType.EDUCATION, EDUCATION);
-
 
         System.out.println("Contacts:");
         RESUME.getContacts().forEach((ContactType, String) -> System.out.println(ContactType + ": " + String));
