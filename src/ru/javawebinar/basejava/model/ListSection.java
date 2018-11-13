@@ -3,7 +3,7 @@ package ru.javawebinar.basejava.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListSection extends Section {
+public class ListSection extends AbstractSection {
     private final List<String> sections = new ArrayList<>();
 
     public void addContent(String content) {
@@ -21,12 +21,12 @@ public class ListSection extends Section {
 
         ListSection that = (ListSection) o;
 
-        return sections != null ? sections.equals(that.sections) : that.sections == null;
+        return sections.equals(that.sections);
     }
 
     @Override
     public int hashCode() {
-        return sections != null ? sections.hashCode() : 0;
+        return sections.hashCode();
     }
 
     @Override

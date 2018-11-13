@@ -1,4 +1,6 @@
-package ru.javawebinar.basejava.model;
+package ru.javawebinar.basejava;
+
+import ru.javawebinar.basejava.model.*;
 
 public class ResumeTestData {
     private static final String UUID = "uuid1";
@@ -11,13 +13,14 @@ public class ResumeTestData {
     private static final ListSection QUALIFICATIONS = new ListSection();
     private static final OrganizationSection EXPERIENCE = new OrganizationSection();
 
-    private static final Organization ORG1 = new Organization("Wrike", "10/2014", "01/2016");
-    private static final Organization ORG2 = new Organization("Java Online Projects", "10/2013", "");
+    private static final Organization ORG1 = new Organization("Wrike", "https://www.wrike.com/","10/2014", "01/2016","Старший разработчик (backend)\n" +
+            "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, авторизация по OAuth1, OAuth2, JWT SSO.");
+    private static final Organization ORG2 = new Organization("Java Online Projects", "http://javaops.ru/","10/2013", "","Автор проекта. Создание, организация и проведение Java онлайн проектов и стажировок.");
 
     private static final OrganizationSection EDUCATION = new OrganizationSection();
 
-    private static final Organization ORG3 = new Organization("Coursera", "03/2013", "05/2013");
-    private static final Organization ORG4 = new Organization("Luxsoft", "03/2011", "04/2011");
+    private static final Organization ORG3 = new Organization("Luxsoft", "http://www.luxoft-training.ru/training/catalog/course.html?ID=22366","03/2011", "04/2011", "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"");
+    private static final Organization ORG4 = new Organization("Coursera", "https://www.coursera.org/course/progfun","03/2013", "05/2013", "\t\"Functional Programming Principles in Scala\" by Martin Odersky");
 
     static {
         ACHIEVEMENT.addContent("С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.");

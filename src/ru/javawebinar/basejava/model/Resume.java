@@ -12,7 +12,7 @@ public class Resume implements Comparable<Resume> {
     private final String fullName;
 
     private final Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
-    private final Map<SectionType, Section> sections = new EnumMap<>(SectionType.class);
+    private final Map<SectionType, AbstractSection> sections = new EnumMap<>(SectionType.class);
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -47,16 +47,16 @@ public class Resume implements Comparable<Resume> {
         return contacts;
     }
 
-    public void addSection(SectionType type, Section section) {
-        sections.put(type, section);
+    public void addSection(SectionType type, AbstractSection abstractSection) {
+        sections.put(type, abstractSection);
     }
 
-    public Section getSection(SectionType type) {
+    public AbstractSection getSection(SectionType type) {
         return sections.get(type);
     }
 
-    public void upddateSection(SectionType type, Section section) {
-        sections.put(type, section);
+    public void upddateSection(SectionType type, AbstractSection abstractSection) {
+        sections.put(type, abstractSection);
     }
 
     @Override
@@ -66,20 +66,24 @@ public class Resume implements Comparable<Resume> {
 
         Resume resume = (Resume) o;
 
-        return uuid != null ? uuid.equals(resume.uuid) : resume.uuid == null;
+        if (!uuid.equals(resume.uuid)) return false;
+        if (!fullName.equals(resume.fullName)) return false;
+        if (!contacts.equals(resume.contacts)) return false;
+        return sections.equals(resume.sections);
     }
 
     @Override
     public int hashCode() {
-        return uuid != null ? uuid.hashCode() : 0;
+        int result = uuid.hashCode();
+        result = 31 * result + fullName.hashCode();
+        result = 31 * result + contacts.hashCode();
+        result = 31 * result + sections.hashCode();
+        return result;
     }
 
     @Override
     public String toString() {
-        return "Resume{" +
-                "uuid='" + uuid + '\'' +
-                ", fullName='" + fullName + '\'' +
-                '}';
+        return uuid + ' ' + fullName;
     }
 
     @Override

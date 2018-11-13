@@ -16,10 +16,10 @@ abstract class AbstractStorage<SK> implements Storage {
         LOGGER.setLevel(Level.INFO);
     }
 
-    public void save(Resume r) {
-        LOGGER.info("Save resume " + r);
-        SK searchKey = getNotExistSearchKey(r.getUuid());
-        doSave(r, searchKey);
+    public void save(Resume resume) {
+        LOGGER.info("Save resume " + resume);
+        SK searchKey = getNotExistSearchKey(resume.getUuid());
+        doSave(resume, searchKey);
     }
 
     public Resume get(String uuid) {
@@ -34,11 +34,11 @@ abstract class AbstractStorage<SK> implements Storage {
         doDelete(searchKey);
     }
 
-    public void update(Resume r) {
-        String uuid = r.getUuid();
-        LOGGER.info("Update resume "+r+" by uuid="+ uuid);
+    public void update(Resume resume) {
+        String uuid = resume.getUuid();
+        LOGGER.info("Update resume "+resume+" by uuid="+ uuid);
         SK searchKey = getExistSearchKey(uuid);
-        doUpdate(r, searchKey);
+        doUpdate(resume, searchKey);
     }
 
     public List<Resume> getAllSorted() {
@@ -69,13 +69,13 @@ abstract class AbstractStorage<SK> implements Storage {
 
     protected abstract boolean isExist(SK searchKey);
 
-    protected abstract void doSave(Resume r, SK searchKey);
+    protected abstract void doSave(Resume resume, SK searchKey);
 
     protected abstract Resume doGet(SK searchKey);
 
     protected abstract void doDelete(SK searchKey);
 
-    protected abstract void doUpdate(Resume r, SK searchKey);
+    protected abstract void doUpdate(Resume resume, SK searchKey);
 
     protected abstract List<Resume> doCopyAll();
 }
