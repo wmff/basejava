@@ -2,6 +2,7 @@ package ru.javawebinar.basejava.model;
 
 import java.util.EnumMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -19,6 +20,8 @@ public class Resume implements Comparable<Resume> {
     }
 
     public Resume(String uuid, String fullName) {
+        Objects.requireNonNull(uuid, "uuid required not null");
+        Objects.requireNonNull(fullName, "fullName required not null");
         this.uuid = uuid;
         this.fullName = fullName;
     }
@@ -32,6 +35,7 @@ public class Resume implements Comparable<Resume> {
     }
 
     public void addContact(ContactType type, String value) {
+        Objects.requireNonNull(value, "value required not null");
         contacts.put(type, value);
     }
 
