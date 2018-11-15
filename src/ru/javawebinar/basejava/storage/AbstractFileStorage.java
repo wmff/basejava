@@ -28,33 +28,33 @@ abstract class AbstractFileStorage extends AbstractStorage<File> {
     }
 
     @Override
-    protected boolean isExist(File searchKey) {
-        return searchKey.exists();
+    protected boolean isExist(File file) {
+        return file.exists();
     }
 
     @Override
-    protected void doSave(Resume resume, File searchKey) {
+    protected void doSave(Resume resume, File file) {
         try {
-            searchKey.createNewFile();
-            doWrite(resume, searchKey);
+            file.createNewFile();
+            doWrite(resume, file);
         } catch (IOException e) {
-            throw new StorageException("IO error", searchKey.getName(), e);
+            throw new StorageException("IO error", file.getName(), e);
         }
     }
 
     @Override
-    protected Resume doGet(File searchKey) {
+    protected Resume doGet(File file) {
         return null;
     }
 
     @Override
-    protected void doDelete(File searchKey) {
+    protected void doDelete(File file) {
 
     }
 
     @Override
-    protected void doUpdate(Resume resume, File searchKey) {
-
+    protected void doUpdate(Resume resume, File file) {
+        doWrite(resume,file);
     }
 
     @Override
@@ -64,13 +64,15 @@ abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     public void clear() {
-
+        for (File file : directory.listFiles()) {
+            file.delete();
+        }
     }
 
     @Override
     public int size() {
-        return 0;
+        return directory.listFiles().length;
     }
 
-    abstract void doWrite(Resume resume, File searchKey);
+    abstract void doWrite(Resume resume, File file);
 }
