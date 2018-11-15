@@ -22,6 +22,6 @@ public abstract class AbstractArrayStorageTest extends AbstractStorageTest {
         } catch (StorageException e) {
             fail("error fill storage");
         }
-        storage.save(RESUME_5);
+        storage.save(RESUME_4);
     }
 }

@@ -1,18 +1,22 @@
 package ru.javawebinar.basejava.model;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 public class ListSection extends AbstractSection {
-    private final List<String> sections = new ArrayList<>();
+    private List<String> sections;
 
-    public void addContent(String content) {
-        Objects.requireNonNull(content, "content required not null");
-        sections.add(content);
+    public ListSection(String... contents) {
+        this(Arrays.asList(contents));
     }
 
-    public List<String> getContent() {
+    public ListSection(List<String> sections) {
+        Objects.requireNonNull(sections, " sections required not null");
+        this.sections = sections;
+    }
+
+    public List<String> getSections() {
         return sections;
     }
 

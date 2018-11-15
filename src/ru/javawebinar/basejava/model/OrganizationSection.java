@@ -1,15 +1,19 @@
 package ru.javawebinar.basejava.model;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 public class OrganizationSection extends AbstractSection {
-    private final List<Organization> organizations = new ArrayList<>();
+    private List<Organization> organizations;
 
-    public void addContent(Organization organization) {
-        Objects.requireNonNull(organization, "organization required not null");
-        organizations.add(organization);
+    public OrganizationSection(Organization... organizations) {
+        this(Arrays.asList(organizations));
+    }
+
+    public OrganizationSection(List<Organization> organizations) {
+        Objects.requireNonNull(organizations, " organizations required not null");
+        this.organizations = organizations;
     }
 
     public List<Organization> getOrganizations() {
