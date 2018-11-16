@@ -14,14 +14,14 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     final Resume[] storage = new Resume[STORAGE_LIMIT];
     int size = 0;
 
-    @Override
-    protected boolean isExist(Integer index) {
-        return index >= 0;
-    }
-
     public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
+    }
+
+    @Override
+    protected boolean isExist(Integer index) {
+        return index >= 0;
     }
 
     @Override

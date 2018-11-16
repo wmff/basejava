@@ -5,6 +5,7 @@ import ru.javawebinar.basejava.model.Resume;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,6 +24,14 @@ abstract class AbstractFileStorage extends AbstractStorage<File> {
     }
 
     @Override
+    public void clear() {
+        File[] files = Objects.requireNonNull(directory.listFiles());
+        for (File file : files) {
+            doDelete(file);
+        }
+    }
+
+    @Override
     protected File getSearchKey(String uuid) {
         return new File(directory, uuid);
     }
@@ -36,43 +45,58 @@ abstract class AbstractFileStorage extends AbstractStorage<File> {
     protected void doSave(Resume resume, File file) {
         try {
             file.createNewFile();
-            doWrite(resume, file);
+            saveInStorage(resume, file);
+        } catch (IOException e) {
+            throw new StorageException("IO error", file.getName(), e);
+        }
+
+    }
+
+    @Override
+    protected Resume doGet(File file) {
+        try {
+            return loadFromStorage(file);
+        } catch (IOException e) {
+            throw new StorageException(file.getName() + "read error", file.getName(),e);
+        }
+    }
+
+    @Override
+    protected void doDelete(File file) {
+        if (!file.delete()) {
+            throw new StorageException(file.getName() + " not exist", file.getName());
+        }
+    }
+
+    @Override
+    protected void doUpdate(Resume resume, File file) {
+        try {
+            saveInStorage(resume, file);
         } catch (IOException e) {
             throw new StorageException("IO error", file.getName(), e);
         }
     }
 
     @Override
-    protected Resume doGet(File file) {
-        return null;
-    }
-
-    @Override
-    protected void doDelete(File file) {
-
-    }
-
-    @Override
-    protected void doUpdate(Resume resume, File file) {
-        doWrite(resume,file);
-    }
-
-    @Override
     protected List<Resume> doCopyAll() {
-        return null;
-    }
-
-    @Override
-    public void clear() {
-        for (File file : directory.listFiles()) {
-            file.delete();
+        List<Resume> list = new ArrayList<>();
+        File[] files = Objects.requireNonNull(directory.listFiles());
+        for (File file: files) {
+            try {
+                list.add(loadFromStorage(file));
+            } catch (IOException e) {
+                throw new StorageException(file.getName() + " not exist", file.getName());
+            }
         }
+        return list;
     }
 
     @Override
     public int size() {
-        return directory.listFiles().length;
+        return Objects.requireNonNull(directory.list()).length;
     }
 
-    abstract void doWrite(Resume resume, File file);
+    abstract void saveInStorage(Resume resume, File file) throws IOException;
+
+    abstract Resume loadFromStorage(File file) throws IOException;
 }
