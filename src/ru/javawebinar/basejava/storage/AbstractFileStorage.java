@@ -57,7 +57,7 @@ abstract class AbstractFileStorage extends AbstractStorage<File> {
         try {
             return loadFromStorage(file);
         } catch (IOException e) {
-            throw new StorageException(file.getName() + "read error", file.getName(),e);
+            throw new StorageException(file.getName() + "read error", file.getName(), e);
         }
     }
 
@@ -79,13 +79,13 @@ abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected List<Resume> doCopyAll() {
-        List<Resume> list = new ArrayList<>();
+        List<Resume> list = new ArrayList<>(size());
         File[] files = Objects.requireNonNull(directory.listFiles());
-        for (File file: files) {
+        for (File file : files) {
             try {
                 list.add(loadFromStorage(file));
             } catch (IOException e) {
-                throw new StorageException(file.getName() + " not exist", file.getName());
+                throw new StorageException("IO error", file.getName(), e);
             }
         }
         return list;
