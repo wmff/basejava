@@ -8,10 +8,11 @@ public class MainFile {
 
     public static void main(String[] args) {
         File dir = new File("./src");
-        listDir(dir);
+        listTree(dir);
+        listTreeDir(dir);
     }
 
-    private static void listDir(File dir) {
+    private static void listTree(File dir) {
         File[] list = dir.listFiles();
         if (list != null) {
             Arrays.sort(list, MainFile::compare);
@@ -19,7 +20,7 @@ public class MainFile {
                 if (file.isDirectory()) {
                     System.out.println(prefix + file.getName());
                     prefix.append(" ");
-                    listDir(file);
+                    listTree(file);
                 } else {
                     System.out.println(prefix + file.getName());
                 }
@@ -39,6 +40,25 @@ public class MainFile {
             return 1;
         } else {
             return o1.compareTo(o2);
+        }
+    }
+
+    private static void listTreeDir(File dir) {
+        File[] list = dir.listFiles();
+        if (list != null) {
+            Arrays.sort(list);
+            for (File file : list) {
+                if (file.isDirectory()) {
+                    System.out.println(prefix + file.getName());
+                    prefix.append(" ");
+                    listTreeDir(file);
+                }
+            }
+
+            int length = prefix.length();
+            if (length > 0) {
+                prefix.delete(length - 1, length);
+            }
         }
     }
 }
