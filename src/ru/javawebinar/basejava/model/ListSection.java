@@ -24,15 +24,13 @@ public class ListSection extends AbstractSection {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         ListSection that = (ListSection) o;
-
-        return sections.equals(that.sections);
+        return Objects.equals(sections, that.sections);
     }
 
     @Override
     public int hashCode() {
-        return sections.hashCode();
+        return Objects.hash(sections);
     }
 
     @Override
