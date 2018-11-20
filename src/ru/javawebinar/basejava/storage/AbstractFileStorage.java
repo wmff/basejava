@@ -3,8 +3,7 @@ package ru.javawebinar.basejava.storage;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -45,7 +44,7 @@ abstract class AbstractFileStorage extends AbstractStorage<File> {
     protected void doSave(Resume resume, File file) {
         try {
             file.createNewFile();
-            saveInStorage(resume, file);
+            saveInStorage(resume, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
             throw new StorageException("IO error", file.getName(), e);
         }
@@ -55,7 +54,7 @@ abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected Resume doGet(File file) {
         try {
-            return loadFromStorage(file);
+            return loadFromStorage(new BufferedInputStream(new FileInputStream(file)));
         } catch (IOException e) {
             throw new StorageException(file.getName() + "read error", file.getName(), e);
         }
@@ -71,7 +70,7 @@ abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected void doUpdate(Resume resume, File file) {
         try {
-            saveInStorage(resume, file);
+            saveInStorage(resume, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
             throw new StorageException("IO error", file.getName(), e);
         }
@@ -83,7 +82,7 @@ abstract class AbstractFileStorage extends AbstractStorage<File> {
         File[] files = Objects.requireNonNull(directory.listFiles());
         for (File file : files) {
             try {
-                list.add(loadFromStorage(file));
+                list.add(loadFromStorage(new BufferedInputStream(new FileInputStream(file))));
             } catch (IOException e) {
                 throw new StorageException("IO error", file.getName(), e);
             }
@@ -96,7 +95,7 @@ abstract class AbstractFileStorage extends AbstractStorage<File> {
         return Objects.requireNonNull(directory.list()).length;
     }
 
-    abstract void saveInStorage(Resume resume, File file) throws IOException;
+    abstract void saveInStorage(Resume resume, OutputStream file) throws IOException;
 
-    abstract Resume loadFromStorage(File file) throws IOException;
+    abstract Resume loadFromStorage(InputStream file) throws IOException;
 }
