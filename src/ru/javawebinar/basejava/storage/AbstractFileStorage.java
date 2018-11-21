@@ -95,7 +95,7 @@ abstract class AbstractFileStorage extends AbstractStorage<File> {
         return Objects.requireNonNull(directory.list()).length;
     }
 
-    abstract void saveInStorage(Resume resume, OutputStream file) throws IOException;
+    abstract void saveInStorage(Resume resume, OutputStream outputStream) throws IOException;
 
-    abstract Resume loadFromStorage(InputStream file) throws IOException;
+    abstract Resume loadFromStorage(InputStream inputStream) throws IOException;
 }
