@@ -7,13 +7,13 @@ import java.util.Objects;
 public class OrganizationSection extends AbstractSection {
     private static final long serialVersionUID = 1L;
 
-    private List<Organization> organizations;
+    private final List<Organization> organizations;
 
     public OrganizationSection(Organization... organizations) {
         this(Arrays.asList(organizations));
     }
 
-    public OrganizationSection(List<Organization> organizations) {
+    private OrganizationSection(List<Organization> organizations) {
         Objects.requireNonNull(organizations, " organizations required not null");
         this.organizations = organizations;
     }

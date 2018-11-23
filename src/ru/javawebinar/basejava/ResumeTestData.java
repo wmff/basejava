@@ -117,36 +117,4 @@ public class ResumeTestData {
 
     }
 
-    public static void main(String[] args) {
-
-//        System.out.println("Contacts:");
-//        RESUME_1.getContacts().forEach((ContactType, String) -> System.out.println(ContactType + ": " + String));
-//        System.out.println();
-//
-//        System.out.println(SectionType.OBJECTIVE.getTitle());
-//        System.out.println(RESUME_1.getSection(SectionType.OBJECTIVE));
-//        System.out.println();
-//
-//        System.out.println(SectionType.PERSONAL.getTitle());
-//        System.out.println(RESUME_1.getSection(SectionType.PERSONAL));
-//        System.out.println();
-//
-//        System.out.println(SectionType.ACHIEVEMENT.getTitle());
-//        System.out.println(RESUME_1.getSection(SectionType.ACHIEVEMENT));
-//        System.out.println();
-//
-//        System.out.println(SectionType.QUALIFICATIONS.getTitle());
-//        System.out.println(RESUME_1.getSection(SectionType.QUALIFICATIONS));
-//        System.out.println();
-//
-//        System.out.println(SectionType.EXPERIENCE.getTitle());
-//        System.out.println(RESUME_1.getSection(SectionType.EXPERIENCE));
-//        System.out.println();
-//
-//        System.out.println(SectionType.EDUCATION.getTitle());
-//        System.out.println(RESUME_1.getSection(SectionType.EDUCATION));
-//        System.out.println();
-
-
-    }
 }

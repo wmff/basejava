@@ -7,7 +7,7 @@ import ru.javawebinar.basejava.storage.Storage;
 /**
  * Test ru.javawebinar.basejava.storage.ArrayStorage
  */
-public class MainTestArrayStorage {
+class MainTestArrayStorage {
     private static final Storage ARRAY_STORAGE = new SortedArrayStorage();
 
     public static void main(String[] args) {

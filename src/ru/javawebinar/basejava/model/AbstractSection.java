@@ -3,4 +3,5 @@ package ru.javawebinar.basejava.model;
 import java.io.Serializable;
 
 abstract class AbstractSection implements Serializable {
+    private static final long serialVersionUID = -3297470869807704251L;
 }

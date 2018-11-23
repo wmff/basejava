@@ -7,13 +7,13 @@ import java.util.Objects;
 public class ListSection extends AbstractSection {
     private static final long serialVersionUID = 1L;
 
-    private List<String> sections;
+    private final List<String> sections;
 
     public ListSection(String... contents) {
         this(Arrays.asList(contents));
     }
 
-    public ListSection(List<String> sections) {
+    private ListSection(List<String> sections) {
         Objects.requireNonNull(sections, " sections required not null");
         this.sections = sections;
     }

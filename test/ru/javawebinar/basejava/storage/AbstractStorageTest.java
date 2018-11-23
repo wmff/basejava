@@ -7,7 +7,6 @@ import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -15,13 +14,13 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 public abstract class AbstractStorageTest {
-    protected static final File STORAGE_DIR = new File("storage");
+    static final String STORAGE_DIR = "storage";
     final Storage storage;
 
     private static final Resume RESUME_1 = ResumeTestData.RESUME_1;
     private static final Resume RESUME_2 = ResumeTestData.RESUME_2;
     private static final Resume RESUME_3 = ResumeTestData.RESUME_3;
-    protected static final Resume RESUME_4 = ResumeTestData.RESUME_4;
+    static final Resume RESUME_4 = ResumeTestData.RESUME_4;
 
     AbstractStorageTest(Storage storage) {
         this.storage = storage;

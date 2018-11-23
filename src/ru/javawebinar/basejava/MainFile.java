@@ -3,8 +3,8 @@ package ru.javawebinar.basejava;
 import java.io.File;
 import java.util.Arrays;
 
-public class MainFile {
-    private static StringBuilder prefix = new StringBuilder();
+class MainFile {
+    private static final StringBuilder prefix = new StringBuilder();
 
     public static void main(String[] args) {
         File dir = new File("./src");

@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 abstract class AbstractStorage<SK> implements Storage {
     private static final Logger LOGGER = Logger.getLogger(AbstractStorage.class.getName());
 
-    public AbstractStorage() {
+    AbstractStorage() {
         LOGGER.setLevel(Level.INFO);
     }
 
