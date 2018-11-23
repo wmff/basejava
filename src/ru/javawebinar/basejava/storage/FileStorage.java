@@ -45,7 +45,7 @@ class FileStorage extends AbstractStorage<File> {
     @Override
     protected void doSave(Resume resume, File file) {
         try {
-            file.createNewFile()
+            file.createNewFile();
             streamSerializable.saveInStorage(resume, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
             throw new StorageException("IO error", file.getName(), e);
