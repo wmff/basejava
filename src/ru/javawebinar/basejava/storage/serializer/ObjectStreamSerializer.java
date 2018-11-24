@@ -1,21 +1,21 @@
-package ru.javawebinar.basejava.storage;
+package ru.javawebinar.basejava.storage.serializer;
 
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.io.*;
 
-public class ObjectStreamSerializable implements StreamSerializable {
+public class ObjectStreamSerializer implements StreamSerializer {
 
     @Override
-    public void saveInStorage(Resume resume, OutputStream outputStream) throws IOException {
+    public void doWrite(Resume resume, OutputStream outputStream) throws IOException {
         try (ObjectOutputStream oos = new ObjectOutputStream(outputStream)) {
             oos.writeObject(resume);
         }
     }
 
     @Override
-    public Resume loadFromStorage(InputStream inputStream) throws IOException {
+    public Resume doRead(InputStream inputStream) throws IOException {
         try (ObjectInputStream ois = new ObjectInputStream(inputStream)) {
             return (Resume) ois.readObject();
         } catch (ClassNotFoundException e) {

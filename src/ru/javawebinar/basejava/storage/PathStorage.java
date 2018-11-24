@@ -2,6 +2,8 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.storage.serializer.ObjectStreamSerializer;
+import ru.javawebinar.basejava.storage.serializer.StreamSerializer;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -14,9 +16,10 @@ import java.util.stream.Collectors;
 class PathStorage extends AbstractStorage<Path> {
     private final Path directory;
 
-    private final StreamSerializable streamSerializable = new ObjectStreamSerializable();
+    private final StreamSerializer streamSerializer;
 
-    PathStorage(String dir) {
+    PathStorage(String dir, StreamSerializer streamSerializer) {
+        this.streamSerializer = streamSerializer;
         directory = Paths.get(dir);
         Objects.requireNonNull(directory, "directory required not null");
         if (!Files.isDirectory(directory)) {
@@ -50,7 +53,7 @@ class PathStorage extends AbstractStorage<Path> {
     protected void doSave(Resume resume, Path path) {
         try {
             Files.createFile(path);
-            streamSerializable.saveInStorage(resume, new BufferedOutputStream(Files.newOutputStream(path)));
+            streamSerializer.doWrite(resume, new BufferedOutputStream(Files.newOutputStream(path)));
         } catch (IOException e) {
             throw new StorageException(path.getFileName() + "IO error", null, e);
         }
@@ -60,7 +63,7 @@ class PathStorage extends AbstractStorage<Path> {
     @Override
     protected Resume doGet(Path path) {
         try {
-            return streamSerializable.loadFromStorage(new BufferedInputStream(Files.newInputStream(path)));
+            return streamSerializer.doRead(new BufferedInputStream(Files.newInputStream(path)));
         } catch (IOException e) {
             throw new StorageException(path.getFileName() + "read error", null, e);
         }
@@ -78,7 +81,7 @@ class PathStorage extends AbstractStorage<Path> {
     @Override
     protected void doUpdate(Resume resume, Path path) {
         try {
-            streamSerializable.saveInStorage(resume, new BufferedOutputStream(Files.newOutputStream(path)));
+            streamSerializer.doWrite(resume, new BufferedOutputStream(Files.newOutputStream(path)));
         } catch (IOException e) {
             throw new StorageException(path.getFileName() + "IO error", null, e);
         }
