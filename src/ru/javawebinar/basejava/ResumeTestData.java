@@ -1,9 +1,9 @@
 package ru.javawebinar.basejava;
 
-import ru.javawebinar.basejava.model.*;
-import ru.javawebinar.basejava.util.DateUtil;
-
-import java.time.Month;
+import ru.javawebinar.basejava.model.ContactType;
+import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.model.SectionType;
+import ru.javawebinar.basejava.model.TextSection;
 
 public class ResumeTestData {
     private static final String FULL_NAME = "Григорий Кислин";
@@ -21,9 +21,11 @@ public class ResumeTestData {
         RESUME_1.addContact(ContactType.STACKOVERFLOW, "https://stackoverflow.com/users/548473");
         RESUME_1.addContact(ContactType.URL, "http://gkislin.ru/");
 
+
         RESUME_1.addSection(SectionType.OBJECTIVE,
                 new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям")
         );
+/*
 
         RESUME_1.addSection(SectionType.PERSONAL,
                 new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры.")
@@ -63,6 +65,7 @@ public class ResumeTestData {
                         )
                 )
         );
+*/
 
         RESUME_2.addContact(ContactType.PHONE, "+7(921)855-04-82");
         RESUME_2.addContact(ContactType.SKYPE, "grigory.kislin");
@@ -72,10 +75,12 @@ public class ResumeTestData {
         RESUME_2.addContact(ContactType.STACKOVERFLOW, "https://stackoverflow.com/users/548473");
         RESUME_2.addContact(ContactType.URL, "http://gkislin.ru/");
 
+
         RESUME_2.addSection(SectionType.OBJECTIVE,
                 new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям")
         );
 
+/*
         RESUME_2.addSection(SectionType.PERSONAL,
                 new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры.")
         );
@@ -113,6 +118,22 @@ public class ResumeTestData {
                                 new Organization.Position(DateUtil.of(2014, Month.OCTOBER), DateUtil.of(2014, Month.DECEMBER), "pos1", "descr1")
                         )
                 )
+        );
+*/
+        RESUME_3.addContact(ContactType.PHONE, "+7(921)855-04-82");
+        RESUME_3.addContact(ContactType.SKYPE, "grigory.kislin");
+
+
+        RESUME_3.addSection(SectionType.OBJECTIVE,
+                new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям")
+        );
+
+        RESUME_4.addContact(ContactType.PHONE, "+7(921)855-04-82");
+        RESUME_4.addContact(ContactType.SKYPE, "grigory.kislin");
+
+
+        RESUME_4.addSection(SectionType.OBJECTIVE,
+                new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям")
         );
 
     }
