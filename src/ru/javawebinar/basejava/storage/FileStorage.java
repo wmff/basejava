@@ -2,7 +2,6 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.storage.serializer.ObjectStreamSerializer;
 import ru.javawebinar.basejava.storage.serializer.StreamSerializer;
 
 import java.io.*;
@@ -51,7 +50,8 @@ class FileStorage extends AbstractStorage<File> {
             file.createNewFile();
             streamSerializer.doWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
-            throw new StorageException("IO error", file.getName(), e);
+            String fileName = file.getName();
+            throw new StorageException(fileName + " write error", fileName, e);
         }
 
     }
@@ -61,7 +61,7 @@ class FileStorage extends AbstractStorage<File> {
         try {
             return streamSerializer.doRead(new BufferedInputStream(new FileInputStream(file)));
         } catch (IOException e) {
-            throw new StorageException(file.getName() + "read error", file.getName(), e);
+            throw new StorageException(file.getName() + "read error", e);
         }
     }
 
@@ -77,7 +77,8 @@ class FileStorage extends AbstractStorage<File> {
         try {
             streamSerializer.doWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
-            throw new StorageException("IO error", file.getName(), e);
+            String fileName = file.getName();
+            throw new StorageException(fileName + " write error", fileName, e);
         }
     }
 
@@ -89,7 +90,7 @@ class FileStorage extends AbstractStorage<File> {
             try {
                 list.add(streamSerializer.doRead(new BufferedInputStream(new FileInputStream(file))));
             } catch (IOException e) {
-                throw new StorageException("IO error", file.getName(), e);
+                throw new StorageException(file.getName() + " read error", e);
             }
         }
         return list;
@@ -97,6 +98,10 @@ class FileStorage extends AbstractStorage<File> {
 
     @Override
     public int size() {
-        return Objects.requireNonNull(directory.list()).length;
+        String[] list = directory.list();
+        if (list == null) {
+            throw new StorageException("Directory read error");
+        }
+        return list.length;
     }
 }
