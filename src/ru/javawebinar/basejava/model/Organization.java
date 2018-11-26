@@ -1,5 +1,10 @@
 package ru.javawebinar.basejava.model;
 
+import ru.javawebinar.basejava.util.LocalDateAdapter;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Month;
@@ -10,11 +15,15 @@ import java.util.Objects;
 import static ru.javawebinar.basejava.util.DateUtil.NOW;
 import static ru.javawebinar.basejava.util.DateUtil.of;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Organization implements Serializable{
     private static final long serialVersionUID = 1L;
 
-    private final Link name;
-    private final List<Position> positions;
+    private Link name;
+    private List<Position> positions;
+
+    public Organization() {
+    }
 
     public Organization(String name, String url, Position... positions) {
         this(new Link(name, url), Arrays.asList(positions));
@@ -55,13 +64,19 @@ public class Organization implements Serializable{
                 '}';
     }
 
+    @XmlAccessorType(XmlAccessType.FIELD)
     public static class Position implements Serializable {
         private static final long serialVersionUID = 1L;
 
-        private final LocalDate dateBegin;
-        private final LocalDate dateEnd;
-        private final String title;
-        private final String description;
+        @XmlJavaTypeAdapter(LocalDateAdapter.class)
+        private LocalDate dateBegin;
+        @XmlJavaTypeAdapter(LocalDateAdapter.class)
+        private LocalDate dateEnd;
+        private String title;
+        private String description;
+
+        public Position() {
+        }
 
         public Position(int beginYear, Month beginMonth, String title, String description) {
             this(of(beginYear, beginMonth), NOW, title, description);
@@ -79,22 +94,6 @@ public class Organization implements Serializable{
             this.dateEnd = dateEnd;
             this.title = title;
             this.description = description;
-        }
-
-        public LocalDate getDateBegin() {
-            return dateBegin;
-        }
-
-        public LocalDate getDateEnd() {
-            return dateEnd;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public String getDescription() {
-            return description;
         }
 
         @Override
