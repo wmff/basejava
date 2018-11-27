@@ -29,7 +29,7 @@ public class Organization implements Serializable{
         this(new Link(name, url), Arrays.asList(positions));
     }
 
-    private Organization(Link link, List<Position> positions) {
+    public Organization(Link link, List<Position> positions) {
         name = link;
         this.positions = positions;
     }
@@ -94,6 +94,22 @@ public class Organization implements Serializable{
             this.dateEnd = dateEnd;
             this.title = title;
             this.description = description;
+        }
+
+        public LocalDate getDateBegin() {
+            return dateBegin;
+        }
+
+        public LocalDate getDateEnd() {
+            return dateEnd;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public String getDescription() {
+            return description;
         }
 
         @Override

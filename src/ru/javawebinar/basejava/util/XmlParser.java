@@ -28,6 +28,7 @@ public class XmlParser {
 
     public <T> T unmarshall(Reader reader) {
         try {
+            //noinspection unchecked
             return (T) unmarshaller.unmarshal(reader);
         } catch (JAXBException e) {
             throw new IllegalStateException(e);

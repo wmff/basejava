@@ -15,10 +15,18 @@ public class Link implements Serializable {
     public Link() {
     }
 
-    Link(String title, String url) {
+    public Link(String title, String url) {
         Objects.requireNonNull(title, "name required not null");
         this.name = title;
         this.url = url;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getUrl() {
+        return url;
     }
 
     @Override

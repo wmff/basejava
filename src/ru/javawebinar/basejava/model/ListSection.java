@@ -7,7 +7,7 @@ import java.util.Objects;
 public class ListSection extends AbstractSection {
     private static final long serialVersionUID = 1L;
 
-    private List<String> sections;
+    private List<String> items;
 
     public ListSection() {
     }
@@ -16,13 +16,13 @@ public class ListSection extends AbstractSection {
         this(Arrays.asList(contents));
     }
 
-    private ListSection(List<String> sections) {
-        Objects.requireNonNull(sections, " sections required not null");
-        this.sections = sections;
+    public ListSection(List<String> items) {
+        Objects.requireNonNull(items, " items required not null");
+        this.items = items;
     }
 
-    public List<String> getSections() {
-        return sections;
+    public List<String> getItems() {
+        return items;
     }
 
     @Override
@@ -30,16 +30,16 @@ public class ListSection extends AbstractSection {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ListSection that = (ListSection) o;
-        return Objects.equals(sections, that.sections);
+        return Objects.equals(items, that.items);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sections);
+        return Objects.hash(items);
     }
 
     @Override
     public String toString() {
-        return sections.toString();
+        return items.toString();
     }
 }
