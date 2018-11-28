@@ -121,8 +121,8 @@ public class ResumeTestData {
                 new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям")
         );
         RESUME_4.addSection(SectionType.ACHIEVEMENT,
-                new ListSection("С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.")
-        );
+                new ListSection("С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.", "ahive2")
+                );
 
     }
 
