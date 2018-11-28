@@ -1,9 +1,9 @@
-lib
-.idea
-out
+/lib
+/.idea
+/out
 *.iml
-log
-storage
+/log
+/storage
 
 
 
