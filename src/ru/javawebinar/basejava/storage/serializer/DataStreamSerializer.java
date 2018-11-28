@@ -34,20 +34,14 @@ public class DataStreamSerializer implements StreamSerializer {
                 AbstractSection section = entry.getValue();
                 switch (sectionType) {
                     case PERSONAL:
-                        dataOutputStream.writeUTF(((TextSection) section).getContent());
-                        break;
                     case OBJECTIVE:
                         dataOutputStream.writeUTF(((TextSection) section).getContent());
                         break;
                     case ACHIEVEMENT:
-                        writeListSection(dataOutputStream, (ListSection) section);
-                        break;
                     case QUALIFICATIONS:
                         writeListSection(dataOutputStream, (ListSection) section);
                         break;
                     case EXPERIENCE:
-                        writeOrganizationSection(dataOutputStream, (OrganizationSection) section);
-                        break;
                     case EDUCATION:
                         writeOrganizationSection(dataOutputStream, (OrganizationSection) section);
                         break;
@@ -104,21 +98,14 @@ public class DataStreamSerializer implements StreamSerializer {
                 SectionType sectionType = SectionType.valueOf(dataInputStream.readUTF());
                 switch (sectionType) {
                     case PERSONAL:
-                        resume.addSection(sectionType, new TextSection(dataInputStream.readUTF()));
-                        break;
                     case OBJECTIVE:
                         resume.addSection(sectionType, new TextSection(dataInputStream.readUTF()));
                         break;
                     case ACHIEVEMENT:
-                        resume.addSection(sectionType, readListSection(dataInputStream));
-                        break;
                     case QUALIFICATIONS:
                         resume.addSection(sectionType, readListSection(dataInputStream));
                         break;
                     case EXPERIENCE:
-                        resume.addSection(sectionType,
-                                new OrganizationSection(readOrganizationSection(dataInputStream)));
-                        break;
                     case EDUCATION:
                         resume.addSection(sectionType,
                                 new OrganizationSection(readOrganizationSection(dataInputStream)));
