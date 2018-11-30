@@ -1,10 +1,8 @@
 package ru.javawebinar.basejava;
 
-class MainDeadlock implements Runnable{
+class MainDeadlock implements Runnable {
     private final static Object OBJECT_1 = new Object();
     private final static Object OBJECT_2 = new Object();
-
-    private static int counter;
 
     public static void main(String args[]) {
         MainDeadlock mainDeadlock = new MainDeadlock();
@@ -13,33 +11,9 @@ class MainDeadlock implements Runnable{
 
     @Override
     public void run() {
-        final Thread THREAD_1 = new Thread(()->{
-            synchronized (OBJECT_1) {
-                for (int i = 0; i < 5_000; i++) {
-                    for (int j = 0; j < 100; j++) {
-                        this.inc();
-                    }
-                }
-                System.out.println("lock " + getThread().getName());
-                synchronized (OBJECT_2) {
-                    System.out.println("run " + getThread().getName());
-                }
-            }
-        });
+        final Thread THREAD_1 = new Thread(() -> someMethod(OBJECT_1, OBJECT_2));
 
-        final Thread THREAD_2 = new Thread(()->{
-            synchronized (OBJECT_2) {
-                for (int i = 0; i < 5_000; i++) {
-                    for (int j = 0; j < 100; j++) {
-                        this.inc();
-                    }
-                }
-                System.out.println("lock " + getThread().getName());
-                synchronized (OBJECT_1) {
-                    System.out.println("run " + getThread().getName());
-                }
-            }
-        });
+        final Thread THREAD_2 = new Thread(() -> someMethod(OBJECT_2, OBJECT_1));
 
         THREAD_1.start();
         THREAD_2.start();
@@ -51,16 +25,24 @@ class MainDeadlock implements Runnable{
             e.printStackTrace();
         }
 
-        System.out.println(counter);
+    }
+
+    private void someMethod(Object object1, Object object2) {
+        synchronized (object1) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("lock " + getThread().getName());
+            synchronized (object2) {
+                System.out.println("run " + getThread().getName());
+            }
+        }
     }
 
     private Thread getThread() {
         return Thread.currentThread();
     }
 
-    private void inc() {
-        synchronized (MainDeadlock.class) {
-            counter++;
-        }
-    }
 }

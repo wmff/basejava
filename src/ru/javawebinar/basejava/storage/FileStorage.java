@@ -6,6 +6,7 @@ import ru.javawebinar.basejava.storage.serializer.StreamSerializer;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,9 +30,7 @@ class FileStorage extends AbstractStorage<File> {
     @Override
     public void clear() {
         File[] files = Objects.requireNonNull(directory.listFiles());
-        for (File file : files) {
-            doDelete(file);
-        }
+        Arrays.stream(files).forEach(this::doDelete);
     }
 
     @Override
