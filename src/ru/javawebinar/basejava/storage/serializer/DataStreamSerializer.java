@@ -48,7 +48,7 @@ public class DataStreamSerializer implements StreamSerializer {
 //                }
 //            }
 
-            myForEach(resume.getSections().entrySet(), entry -> {
+            writeSet(resume.getSections().entrySet(), entry -> {
                 SectionType sectionType = entry.getKey();
                 dataOutputStream.writeUTF(sectionType.name());
                 AbstractSection section = entry.getValue();
@@ -70,9 +70,9 @@ public class DataStreamSerializer implements StreamSerializer {
         }
     }
 
-    private <T> void myForEach(Set<T> sections, Action<T> action) throws IOException {
+    private <T> void writeSet(Set<T> sections, Action<T> writer) throws IOException {
         for (T entry : sections) {
-            action.accept(entry);
+            writer.write(entry);
         }
     }
 
