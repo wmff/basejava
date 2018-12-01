@@ -26,9 +26,29 @@ public class DataStreamSerializer implements StreamSerializer {
                 dataOutputStream.writeUTF(entry.getValue());
             }
 
-            Set<Map.Entry<SectionType, AbstractSection>> sections = resume.getSections().entrySet();
+//            Set<Map.Entry<SectionType, AbstractSection>> sections = resume.getSections().entrySet();
 
-            for (Map.Entry<SectionType, AbstractSection> entry : sections) {
+//            for (Map.Entry<SectionType, AbstractSection> entry : sections) {
+//                SectionType sectionType = entry.getKey();
+//                dataOutputStream.writeUTF(sectionType.name());
+//                AbstractSection section = entry.getValue();
+//                switch (sectionType) {
+//                    case PERSONAL:
+//                    case OBJECTIVE:
+//                        dataOutputStream.writeUTF(((TextSection) section).getContent());
+//                        break;
+//                    case ACHIEVEMENT:
+//                    case QUALIFICATIONS:
+//                        writeListSection(dataOutputStream, (ListSection) section);
+//                        break;
+//                    case EXPERIENCE:
+//                    case EDUCATION:
+//                        writeOrganizationSection(dataOutputStream, (OrganizationSection) section);
+//                        break;
+//                }
+//            }
+
+            myForEach(resume.getSections().entrySet(), entry -> {
                 SectionType sectionType = entry.getKey();
                 dataOutputStream.writeUTF(sectionType.name());
                 AbstractSection section = entry.getValue();
@@ -46,7 +66,13 @@ public class DataStreamSerializer implements StreamSerializer {
                         writeOrganizationSection(dataOutputStream, (OrganizationSection) section);
                         break;
                 }
-            }
+            });
+        }
+    }
+
+    private <T> void myForEach(Set<T> sections, Action<T> action) throws IOException {
+        for (T entry : sections) {
+            action.accept(entry);
         }
     }
 
@@ -147,4 +173,5 @@ public class DataStreamSerializer implements StreamSerializer {
     private LocalDate readDate(DataInputStream dataInputStream) throws IOException {
         return DateUtil.of(dataInputStream.readInt(), Month.of(dataInputStream.readInt()));
     }
+
 }
