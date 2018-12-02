@@ -37,7 +37,7 @@ public class DataStreamSerializer implements StreamSerializer {
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
-                        writeCollection(dataOutputStream, ((ListSection) section).getItems(), item -> dataOutputStream.writeUTF(item));
+                        writeCollection(dataOutputStream, ((ListSection) section).getItems(), dataOutputStream::writeUTF);
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
@@ -82,13 +82,9 @@ public class DataStreamSerializer implements StreamSerializer {
             String fullName = dataInputStream.readUTF();
             Resume resume = new Resume(uuid, fullName);
 
-            int size = dataInputStream.readInt();
-            for (int i = 0; i < size; i++) {
-                resume.addContact(ContactType.valueOf(dataInputStream.readUTF()), dataInputStream.readUTF());
-            }
+            readItems(dataInputStream, () -> resume.addContact(ContactType.valueOf(dataInputStream.readUTF()), dataInputStream.readUTF()));
 
-            int sectionCount = dataInputStream.readInt();
-            for (int i = 0; i < sectionCount; i++) {
+            readItems(dataInputStream, () -> {
                 SectionType sectionType = SectionType.valueOf(dataInputStream.readUTF());
                 switch (sectionType) {
                     case PERSONAL:
@@ -105,8 +101,19 @@ public class DataStreamSerializer implements StreamSerializer {
                                 new OrganizationSection(readOrganizationSection(dataInputStream)));
                         break;
                 }
-            }
+            });
             return resume;
+        }
+    }
+
+    private interface Reader {
+        void read() throws IOException;
+    }
+
+    private void readItems(DataInputStream dataInputStream, Reader reader) throws IOException {
+        int size = dataInputStream.readInt();
+        for (int i = 0; i < size; i++) {
+            reader.read();
         }
     }
 
