@@ -123,6 +123,17 @@ public class ResumeTestData {
         RESUME_4.addSection(SectionType.ACHIEVEMENT,
                 new ListSection("С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.", "ahive2")
                 );
+        RESUME_4.addSection(SectionType.EXPERIENCE,
+                new OrganizationSection(
+                        new Organization("Org1", "https://url",
+                                new Organization.Position(DateUtil.of(2014, Month.OCTOBER), DateUtil.of(2014, Month.DECEMBER), "pos1", "descr1"),
+                                new Organization.Position(DateUtil.of(2014, Month.OCTOBER), DateUtil.of(2014, Month.DECEMBER), "pos1", "descr1")
+                        ),
+                        new Organization("Org2", "https://url2",
+                                new Organization.Position(DateUtil.of(2014, Month.OCTOBER), DateUtil.of(2014, Month.DECEMBER), "pos1", "descr1")
+                        )
+                )
+        );
 
     }
 
