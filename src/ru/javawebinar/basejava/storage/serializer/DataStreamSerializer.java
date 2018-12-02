@@ -59,15 +59,15 @@ public class DataStreamSerializer implements StreamSerializer {
         }
     }
 
-    private interface Action<T> {
-        void write(T t) throws IOException;
-    }
-
     private <T> void writeCollection(DataOutputStream dataOutputStream, Collection<T> collection, Action<T> writer) throws IOException {
         dataOutputStream.writeInt(collection.size());
         for (T entry : collection) {
             writer.write(entry);
         }
+    }
+
+    private interface Action<T> {
+        void write(T t) throws IOException;
     }
 
     private void writeDate(DataOutputStream dataOutputStream, LocalDate date) throws IOException {
@@ -82,7 +82,6 @@ public class DataStreamSerializer implements StreamSerializer {
             String fullName = dataInputStream.readUTF();
             Resume resume = new Resume(uuid, fullName);
 
-
             int size = dataInputStream.readInt();
             for (int i = 0; i < size; i++) {
                 resume.addContact(ContactType.valueOf(dataInputStream.readUTF()), dataInputStream.readUTF());
@@ -90,14 +89,11 @@ public class DataStreamSerializer implements StreamSerializer {
 
             int sectionCount = dataInputStream.readInt();
             for (int i = 0; i < sectionCount; i++) {
-
-//            while (dataInputStream.available() > 0) {
                 SectionType sectionType = SectionType.valueOf(dataInputStream.readUTF());
-                System.out.println("!!!"+sectionType);
                 switch (sectionType) {
                     case PERSONAL:
                     case OBJECTIVE:
-                            resume.addSection(sectionType, new TextSection(dataInputStream.readUTF()));
+                        resume.addSection(sectionType, new TextSection(dataInputStream.readUTF()));
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
@@ -129,7 +125,6 @@ public class DataStreamSerializer implements StreamSerializer {
 
         for (int i = 0; i < size; i++) {
             Link link = new Link(dataInputStream.readUTF(), dataInputStream.readUTF());
-
 
             int sizePositions = dataInputStream.readInt();
             List<Organization.Position> positions = new ArrayList<>(sizePositions);
