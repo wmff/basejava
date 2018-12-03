@@ -16,7 +16,7 @@ import static ru.javawebinar.basejava.util.DateUtil.NOW;
 import static ru.javawebinar.basejava.util.DateUtil.of;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Organization implements Serializable{
+public class Organization implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Link name;
@@ -93,7 +93,7 @@ public class Organization implements Serializable{
             this.dateBegin = dateBegin;
             this.dateEnd = dateEnd;
             this.title = title;
-            this.description = description;
+            this.description = description == null ? "" : description;
         }
 
         public LocalDate getDateBegin() {

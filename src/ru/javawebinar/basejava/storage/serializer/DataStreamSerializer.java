@@ -93,21 +93,27 @@ public class DataStreamSerializer implements StreamSerializer {
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
-                        resume.addSection(sectionType, readListSection(dataInputStream));
+                        resume.addSection(sectionType, new ListSection(
+                                readListSection(dataInputStream, dataInputStream::readUTF))
+                        );
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
                         resume.addSection(sectionType,
-                                new OrganizationSection(readOrganizationSection(dataInputStream)));
+                                new OrganizationSection(
+                                        readListSection(dataInputStream, () -> new Organization(
+                                                new Link(dataInputStream.readUTF(), dataInputStream.readUTF()),
+                                                readListSection(dataInputStream, () -> new Organization.Position(
+                                                        readDate(dataInputStream), readDate(dataInputStream),
+                                                        dataInputStream.readUTF(), dataInputStream.readUTF()
+                                                ))
+                                        ))
+                                ));
                         break;
                 }
             });
             return resume;
         }
-    }
-
-    private interface Reader {
-        void read() throws IOException;
     }
 
     private void readItems(DataInputStream dataInputStream, Reader reader) throws IOException {
@@ -117,31 +123,21 @@ public class DataStreamSerializer implements StreamSerializer {
         }
     }
 
-    private ListSection readListSection(DataInputStream dataInputStream) throws IOException {
-        int size = dataInputStream.readInt();
-        List<String> list = new ArrayList<>(size);
-        for (int i = 0; i < size; i++) {
-            list.add(dataInputStream.readUTF());
-        }
-        return new ListSection(list);
+    private interface Reader {
+        void read() throws IOException;
     }
 
-    private List<Organization> readOrganizationSection(DataInputStream dataInputStream) throws IOException {
+    private <T> List<T> readListSection(DataInputStream dataInputStream, Consumer<T> reader) throws IOException {
         int size = dataInputStream.readInt();
-        List<Organization> organizations = new ArrayList<>(size);
-
+        List<T> list = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
-            Link link = new Link(dataInputStream.readUTF(), dataInputStream.readUTF());
-
-            int sizePositions = dataInputStream.readInt();
-            List<Organization.Position> positions = new ArrayList<>(sizePositions);
-            for (int j = 0; j < sizePositions; j++) {
-                positions.add(new Organization.Position(readDate(dataInputStream), readDate(dataInputStream),
-                        dataInputStream.readUTF(), dataInputStream.readUTF()));
-            }
-            organizations.add(new Organization(link, positions));
+            list.add(reader.read());
         }
-        return organizations;
+        return list;
+    }
+
+    private interface Consumer<T> {
+        T read() throws IOException;
     }
 
     private LocalDate readDate(DataInputStream dataInputStream) throws IOException {
