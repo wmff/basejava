@@ -116,18 +116,18 @@ public class DataStreamSerializer implements StreamSerializer {
         }
     }
 
-    private void readItems(DataInputStream dataInputStream, Reader reader) throws IOException {
+    private void readItems(DataInputStream dataInputStream, Processor processor) throws IOException {
         int size = dataInputStream.readInt();
         for (int i = 0; i < size; i++) {
-            reader.read();
+            processor.read();
         }
     }
 
-    private interface Reader {
+    private interface Processor {
         void read() throws IOException;
     }
 
-    private <T> List<T> readListSection(DataInputStream dataInputStream, Consumer<T> reader) throws IOException {
+    private <T> List<T> readListSection(DataInputStream dataInputStream, ElementReader<T> reader) throws IOException {
         int size = dataInputStream.readInt();
         List<T> list = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
@@ -136,7 +136,7 @@ public class DataStreamSerializer implements StreamSerializer {
         return list;
     }
 
-    private interface Consumer<T> {
+    private interface ElementReader<T> {
         T read() throws IOException;
     }
 
