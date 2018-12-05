@@ -24,22 +24,18 @@ public class MainJava8Streams {
 
     }
 
-    private static int minValue(int[] values) {
+    private static Integer minValue(int[] values) {
         return Arrays.stream(values)
                 .distinct()
                 .sorted()
-                .reduce((str, x) -> Integer.parseInt(str + String.valueOf(x)))
+                .reduce((left, right) -> left * 10 + right)
                 .orElse(0);
     }
 
     private static List<Integer> oddOrEven(List<Integer> integers) {
-        int sum = integers.stream().mapToInt(Integer::intValue).sum();
-        return sum % 2 == 0 ? integers.stream()
-                .filter(x -> x % 2 != 0)
-                .collect(Collectors.toList()) : integers.stream()
-                .filter(x -> x % 2 == 0)
+        int oddOrEven = integers.stream().mapToInt(Integer::intValue).sum() % 2;
+        return integers.stream()
+                .filter(x -> (oddOrEven != 0) == (x % 2 == 0))
                 .collect(Collectors.toList());
-
     }
-
 }
