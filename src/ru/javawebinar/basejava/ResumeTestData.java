@@ -13,6 +13,7 @@ public class ResumeTestData {
     public static final Resume RESUME_4 = new Resume(FULL_NAME);
 
     static {
+        /*
         RESUME_1.addContact(ContactType.PHONE, "+7(921)855-04-82");
         RESUME_1.addContact(ContactType.SKYPE, "grigory.kislin");
         RESUME_1.addContact(ContactType.EMAIL, "gkislin@yandex.ru");
@@ -134,6 +135,7 @@ public class ResumeTestData {
                         )
                 )
         );
+        */
 
     }
 
