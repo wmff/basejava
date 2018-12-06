@@ -35,7 +35,7 @@ public class MainJava8Streams {
     private static List<Integer> oddOrEven(List<Integer> integers) {
         int oddOrEven = integers.stream().mapToInt(Integer::intValue).sum() % 2;
         return integers.stream()
-                .filter(x -> (oddOrEven != 0) == (x % 2 == 0))
+                .filter(x -> oddOrEven != x % 2)
                 .collect(Collectors.toList());
     }
 }
