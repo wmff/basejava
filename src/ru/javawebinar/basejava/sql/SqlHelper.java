@@ -42,7 +42,7 @@ public class SqlHelper {
         }
     }
 
-    private interface SqlExec {
+    public interface SqlExec {
         void execute(PreparedStatement preparedStatement) throws SQLException;
     }
 }
