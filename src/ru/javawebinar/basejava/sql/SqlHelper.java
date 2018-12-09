@@ -16,22 +16,11 @@ public class SqlHelper {
         this.connectionFactory = connectionFactory;
     }
 
-    public void execute(String sql) {
+    public <T> T execute(String sql, SqlExec<T> sqlExec) {
         try (Connection connection = connectionFactory.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.execute();
             LOGGER.info(preparedStatement.toString());
-        } catch (SQLException e) {
-            LOGGER.warning(e.getMessage());
-            throw new StorageException(e);
-        }
-    }
-
-    public void execute(String sql, SqlExec sqlExec) {
-        try (Connection connection = connectionFactory.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            sqlExec.execute(preparedStatement);
-            LOGGER.info(preparedStatement.toString());
+            return sqlExec.execute(preparedStatement);
         } catch (SQLException e) {
             LOGGER.warning(e.getMessage());
             if (e.getSQLState().equals("23505")) {
@@ -42,7 +31,7 @@ public class SqlHelper {
         }
     }
 
-    public interface SqlExec {
-        void execute(PreparedStatement preparedStatement) throws SQLException;
+    public interface SqlExec<T> {
+        T execute(PreparedStatement preparedStatement) throws SQLException;
     }
 }
