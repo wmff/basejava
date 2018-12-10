@@ -16,10 +16,13 @@ public class SqlHelper {
         this.connectionFactory = connectionFactory;
     }
 
+    public void execute(String sql) {
+        execute(sql, PreparedStatement::execute);
+    }
+
     public <T> T execute(String sql, SqlExec<T> sqlExec) {
         try (Connection connection = connectionFactory.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            LOGGER.info(preparedStatement.toString());
             return sqlExec.execute(preparedStatement);
         } catch (SQLException e) {
             LOGGER.warning(e.getMessage());

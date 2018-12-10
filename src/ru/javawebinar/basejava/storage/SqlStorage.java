@@ -5,21 +5,23 @@ import ru.javawebinar.basejava.model.Resume;
 import ru.javawebinar.basejava.sql.SqlHelper;
 
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class SqlStorage implements Storage {
+    private static final Logger LOGGER = Logger.getLogger(SqlStorage.class.getName());
+
     private final SqlHelper sqlHelper;
 
-    SqlStorage(String dbUrl, String dbUser, String dbPassword) {
+    public SqlStorage(String dbUrl, String dbUser, String dbPassword) {
         sqlHelper = new SqlHelper(() -> DriverManager.getConnection(dbUrl, dbUser, dbPassword));
     }
 
     @Override
     public void clear() {
-        sqlHelper.execute("DELETE FROM resume", PreparedStatement::execute);
+        sqlHelper.execute("TRUNCATE TABLE resume CASCADE ");
     }
 
     @Override
