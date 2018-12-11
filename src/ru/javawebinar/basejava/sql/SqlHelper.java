@@ -1,6 +1,5 @@
 package ru.javawebinar.basejava.sql;
 
-import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.StorageException;
 
 import java.sql.Connection;
@@ -26,15 +25,34 @@ public class SqlHelper {
             return sqlExec.execute(preparedStatement);
         } catch (SQLException e) {
             LOGGER.warning(e.getMessage());
-            if (e.getSQLState().equals("23505")) {
-                throw new ExistStorageException(e);
-            } else {
-                throw new StorageException(e);
+            throw ExceptionUtil.convertException(e);
+        }
+    }
+
+    public <T> void transactionalExecute(SqlTransaction<T> executor) {
+        try (Connection connection = connectionFactory.getConnection()) {
+            try {
+                connection.setAutoCommit(false);
+//                T response = executor.execute(connection);
+                executor.execute(connection);
+                connection.commit();
+//                return response;
+            } catch (SQLException e) {
+                connection.rollback();
+                throw ExceptionUtil.convertException(e);
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new StorageException(e);
         }
     }
 
     public interface SqlExec<T> {
         T execute(PreparedStatement preparedStatement) throws SQLException;
     }
+
+    public interface SqlTransaction<T> {
+        void execute(Connection connection) throws SQLException;
+    }
+
 }

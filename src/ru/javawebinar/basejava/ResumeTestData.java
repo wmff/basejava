@@ -1,9 +1,7 @@
 package ru.javawebinar.basejava;
 
-import ru.javawebinar.basejava.model.*;
-import ru.javawebinar.basejava.util.DateUtil;
-
-import java.time.Month;
+import ru.javawebinar.basejava.model.ContactType;
+import ru.javawebinar.basejava.model.Resume;
 
 public class ResumeTestData {
     private static final String FULL_NAME = "Григорий Кислин";
@@ -13,7 +11,7 @@ public class ResumeTestData {
     public static final Resume RESUME_4 = new Resume(FULL_NAME);
 
     static {
-        /*
+
         RESUME_1.addContact(ContactType.PHONE, "+7(921)855-04-82");
         RESUME_1.addContact(ContactType.SKYPE, "grigory.kislin");
         RESUME_1.addContact(ContactType.EMAIL, "gkislin@yandex.ru");
@@ -21,6 +19,8 @@ public class ResumeTestData {
         RESUME_1.addContact(ContactType.GITHUB, "https://github.com/gkislin");
         RESUME_1.addContact(ContactType.STACKOVERFLOW, "https://stackoverflow.com/users/548473");
         RESUME_1.addContact(ContactType.URL, "http://gkislin.ru/");
+
+        /*
         RESUME_1.addSection(SectionType.OBJECTIVE,
                 new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям")
         );
@@ -61,13 +61,16 @@ public class ResumeTestData {
                 )
         );
 
+*/
         RESUME_2.addContact(ContactType.PHONE, "+7(921)855-04-82");
         RESUME_2.addContact(ContactType.SKYPE, "grigory.kislin");
-        RESUME_2.addContact(ContactType.EMAIL, "gkislin@yandex.ru");
-        RESUME_2.addContact(ContactType.LINKEDIN, "https://www.linkedin.com/in/gkislin");
-        RESUME_2.addContact(ContactType.GITHUB, "https://github.com/gkislin");
-        RESUME_2.addContact(ContactType.STACKOVERFLOW, "https://stackoverflow.com/users/548473");
-        RESUME_2.addContact(ContactType.URL, "http://gkislin.ru/");
+//        RESUME_2.addContact(ContactType.EMAIL, "gkislin@yandex.ru");
+//        RESUME_2.addContact(ContactType.LINKEDIN, "https://www.linkedin.com/in/gkislin");
+//        RESUME_2.addContact(ContactType.GITHUB, "https://github.com/gkislin");
+//        RESUME_2.addContact(ContactType.STACKOVERFLOW, "https://stackoverflow.com/users/548473");
+//        RESUME_2.addContact(ContactType.URL, "http://gkislin.ru/");
+
+        /*
         RESUME_2.addSection(SectionType.OBJECTIVE,
                 new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям")
         );
@@ -105,7 +108,8 @@ public class ResumeTestData {
                         )
                 )
         );
-
+*/
+        /*
         RESUME_3.addContact(ContactType.PHONE, "+7(921)855-04-82");
         RESUME_3.addContact(ContactType.SKYPE, "grigory.kislin");
         RESUME_3.addSection(SectionType.OBJECTIVE,
@@ -115,9 +119,10 @@ public class ResumeTestData {
                 new ListSection("С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.")
         );
 
-
+*/
         RESUME_4.addContact(ContactType.PHONE, "+7(921)855-04-82");
         RESUME_4.addContact(ContactType.SKYPE, "grigory.kislin");
+/*
         RESUME_4.addSection(SectionType.OBJECTIVE,
                 new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям")
         );
