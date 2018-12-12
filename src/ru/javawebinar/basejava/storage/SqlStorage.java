@@ -5,12 +5,8 @@ import ru.javawebinar.basejava.model.ContactType;
 import ru.javawebinar.basejava.model.Resume;
 import ru.javawebinar.basejava.sql.SqlHelper;
 
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.sql.*;
+import java.util.*;
 
 public class SqlStorage implements Storage {
     private final SqlHelper sqlHelper;
@@ -32,37 +28,37 @@ public class SqlStorage implements Storage {
                 preparedStatement.setString(2, resume.getFullName());
                 preparedStatement.execute();
             }
-
-            try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO contact (resume_uuid, type, value) VALUES (?,?,?)")) {
-                for (Map.Entry<ContactType, String> entry : resume.getContacts().entrySet()) {
-                    preparedStatement.setString(1, resume.getUuid());
-                    preparedStatement.setString(2, entry.getKey().name());
-                    preparedStatement.setString(3, entry.getValue());
-                    preparedStatement.addBatch();
-                }
-                preparedStatement.executeBatch();
-            }
+            insertContacts(resume, connection);
         });
+    }
+
+    private void insertContacts(Resume resume, Connection connection) throws SQLException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO contact (resume_uuid, type, value) VALUES (?,?,?)")) {
+            for (Map.Entry<ContactType, String> entry : resume.getContacts().entrySet()) {
+                preparedStatement.setString(1, resume.getUuid());
+                preparedStatement.setString(2, entry.getKey().name());
+                preparedStatement.setString(3, entry.getValue());
+                preparedStatement.addBatch();
+            }
+            preparedStatement.executeBatch();
+        }
     }
 
     @Override
     public Resume get(String uuid) {
-//        https://stackoverflow.com/questions/7886462/how-to-get-row-count-using-resultset-in-java
-        return sqlHelper.execute("SELECT *, count(*) over() total_rows FROM resume r\n" +
+        return sqlHelper.execute("SELECT * FROM resume r\n" +
                 "  LEFT JOIN contact c ON r.uuid = c.resume_uuid WHERE r.uuid = ?", preparedStatement -> {
             preparedStatement.setString(1, uuid);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (!resultSet.next()) {
                 throw new NotExistStorageException(uuid);
             }
+
             Resume resume = new Resume(uuid, resultSet.getString("full_name"));
             do {
-                if (Integer.parseInt(resultSet.getString("total_rows")) > 1) {
-                    if (!resultSet.getString("resume_uuid").isEmpty()) {
-                        String value = resultSet.getString("value");
-                        ContactType contactType = ContactType.valueOf(resultSet.getString("type"));
-                        resume.addContact(contactType, value);
-                    }
+                String value = resultSet.getString("value");
+                if (value != null) {
+                    resume.addContact(ContactType.valueOf(resultSet.getString("type")), value);
                 }
             } while (resultSet.next());
             return resume;
@@ -91,35 +87,34 @@ public class SqlStorage implements Storage {
                 }
             }
 
-            try (PreparedStatement preparedStatement = connection.prepareStatement("UPDATE contact SET value = ? WHERE type = ? AND resume_uuid = ?")) {
-                for (Map.Entry<ContactType, String> entry : resume.getContacts().entrySet()) {
-                    preparedStatement.setString(1, entry.getValue());
-                    preparedStatement.setString(2, entry.getKey().name());
-                    preparedStatement.setString(3, resume.getUuid());
-                    if (preparedStatement.executeUpdate() != 0) {
-                        preparedStatement.addBatch();
-                    } else {
-                        try (PreparedStatement ps = connection.prepareStatement("INSERT INTO contact (resume_uuid, type, value) VALUES (?,?,?)")) {
-                            ps.setString(1, resume.getUuid());
-                            ps.setString(2, entry.getKey().name());
-                            ps.setString(3, entry.getValue());
-                        }
-                    }
-                }
-                preparedStatement.executeBatch();
+            try (PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM contact WHERE resume_uuid = ?")) {
+                preparedStatement.setString(1, resume.getUuid());
+                preparedStatement.execute();
             }
+            insertContacts(resume, connection);
         });
     }
 
     @Override
     public List<Resume> getAllSorted() {
-        return sqlHelper.execute("SELECT * FROM resume ORDER BY full_name, uuid", preparedStatement -> {
+        return sqlHelper.execute("SELECT * FROM resume r" +
+                " LEFT JOIN contact c ON r.uuid = c.resume_uuid ORDER BY full_name, uuid", preparedStatement -> {
             ResultSet resultSet = preparedStatement.executeQuery();
-            List<Resume> list = new ArrayList<>(size());
+            Map<String, Resume> map = new HashMap<>();
             while (resultSet.next()) {
-                Resume resume = get(resultSet.getString("uuid"));
-                list.add(resume);
+                String uuid = resultSet.getString("uuid");
+                Resume resume = map.get(uuid);
+                if (resume == null) {
+                    resume = new Resume(uuid, resultSet.getString("full_name"));
+                    map.put(uuid, resume);
+                }
+                String value = resultSet.getString("value");
+                if (value != null) {
+                    resume.addContact(ContactType.valueOf(resultSet.getString("type")), value);
+                }
             }
+            ArrayList<Resume> list = new ArrayList<>(map.values());
+            Collections.sort(list);
             return list;
         });
     }
