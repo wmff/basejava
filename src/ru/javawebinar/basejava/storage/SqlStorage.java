@@ -8,6 +8,8 @@ import ru.javawebinar.basejava.sql.SqlHelper;
 import java.sql.*;
 import java.util.*;
 
+//TODO implement Sections (except Org section)
+// Join and split ListSection by '\n\
 public class SqlStorage implements Storage {
     private final SqlHelper sqlHelper;
 
@@ -44,10 +46,7 @@ public class SqlStorage implements Storage {
 
             Resume resume = new Resume(uuid, resultSet.getString("full_name"));
             do {
-                String value = resultSet.getString("value");
-                if (value != null) {
-                    resume.addContact(ContactType.valueOf(resultSet.getString("type")), value);
-                }
+                addContact(resultSet, resume);
             } while (resultSet.next());
             return resume;
         });
@@ -94,13 +93,17 @@ public class SqlStorage implements Storage {
                 String full_name = resultSet.getString("full_name");
                 Resume resume = map.computeIfAbsent(uuid, u -> new Resume(u, full_name));
 
-                String value = resultSet.getString("value");
-                if (value != null) {
-                    resume.addContact(ContactType.valueOf(resultSet.getString("type")), value);
-                }
+                addContact(resultSet, resume);
             }
             return new ArrayList<>(map.values());
         });
+    }
+
+    private void addContact(ResultSet resultSet, Resume resume) throws SQLException {
+        String value = resultSet.getString("value");
+        if (value != null) {
+            resume.addContact(ContactType.valueOf(resultSet.getString("type")), value);
+        }
     }
 
     @Override
