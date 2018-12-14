@@ -2,6 +2,7 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.model.Resume;
 
+import java.util.List;
 import java.util.stream.IntStream;
 
 /**
@@ -23,4 +24,5 @@ public class ArrayStorage extends AbstractArrayStorage {
     protected void deleteFromStorage(int index) {
         storage[index] = storage[size - 1];
     }
+
 }

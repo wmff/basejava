@@ -1,0 +1,11 @@
+table {
+    border-collapse: collapse;
+    background-color: aquamarine;
+    width:70%;
+}
+
+th, td {
+    border: 1px solid black;
+    vertical-align: top;
+}
+
