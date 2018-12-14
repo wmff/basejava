@@ -9,7 +9,7 @@ import java.sql.*;
 import java.util.*;
 
 //TODO implement Sections (except Org section)
-// Join and split ListSection by '\n\
+// Join and split ListSection by '\n'
 public class SqlStorage implements Storage {
     private final SqlHelper sqlHelper;
 
@@ -31,6 +31,7 @@ public class SqlStorage implements Storage {
                 preparedStatement.execute();
             }
             insertContacts(resume, connection);
+            return null;
         });
     }
 
@@ -79,6 +80,7 @@ public class SqlStorage implements Storage {
                 preparedStatement.execute();
             }
             insertContacts(resume, connection);
+            return null;
         });
     }
 
@@ -94,6 +96,34 @@ public class SqlStorage implements Storage {
                 Resume resume = map.computeIfAbsent(uuid, u -> new Resume(u, full_name));
 
                 addContact(resultSet, resume);
+            }
+            return new ArrayList<>(map.values());
+        });
+    }
+
+    public List<Resume> getAll() {
+        return sqlHelper.transactionalExecute(connection -> {
+            Map<String, Resume> map = new HashMap<>();
+            try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM resume")) {
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    String uuid = resultSet.getString("uuid");
+                    String full_name = resultSet.getString("full_name");
+                    Resume resume = map.computeIfAbsent(uuid, u -> new Resume(u, full_name));
+                }
+            }
+
+            try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM contact")) {
+                ResultSet resultSet = preparedStatement.executeQuery();
+                while (resultSet.next()) {
+                    String uuid = resultSet.getString("resume_uuid");
+                    Resume resume = map.get(uuid);
+                    if (uuid.equals(resume.getUuid())) {
+                        resume.addContact(ContactType.valueOf(resultSet.getString("type")),
+                                resultSet.getString("value"));
+                    }
+                    map.put(uuid, resume);
+                }
             }
             return new ArrayList<>(map.values());
         });
