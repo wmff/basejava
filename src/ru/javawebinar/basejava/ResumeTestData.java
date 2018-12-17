@@ -1,7 +1,6 @@
 package ru.javawebinar.basejava;
 
-import ru.javawebinar.basejava.model.ContactType;
-import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.model.*;
 
 public class ResumeTestData {
     private static final String FULL_NAME = "Григорий Кислин";
@@ -20,24 +19,26 @@ public class ResumeTestData {
         RESUME_1.addContact(ContactType.STACKOVERFLOW, "https://stackoverflow.com/users/548473");
         RESUME_1.addContact(ContactType.URL, "http://gkislin.ru/");
 
-        /*
+
         RESUME_1.addSection(SectionType.OBJECTIVE,
                 new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям")
         );
         RESUME_1.addSection(SectionType.PERSONAL,
                 new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры.")
         );
+
         RESUME_1.addSection(SectionType.ACHIEVEMENT,
                 new ListSection("achivement1",
                         "achivement2")
         );
+        /*
         RESUME_1.addSection(SectionType.QUALIFICATIONS,
                 new ListSection("JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2",
                         "Version control: Subversion, Git, Mercury, ClearCase, Perforce",
                         "DB: PostgreSQL(наследование, pgplsql, PL/Python), Redis (Jedis), H2, Oracle, MySQL, SQLite, MS SQL, HSQLDB"
                 )
         );
-
+/*
         RESUME_1.addSection(SectionType.EXPERIENCE,
                 new OrganizationSection(
                         new Organization("Org1", "https://url",
@@ -112,6 +113,7 @@ public class ResumeTestData {
         /*
         RESUME_3.addContact(ContactType.PHONE, "+7(921)855-04-82");
         RESUME_3.addContact(ContactType.SKYPE, "grigory.kislin");
+        */
         RESUME_3.addSection(SectionType.OBJECTIVE,
                 new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям")
         );
@@ -119,7 +121,7 @@ public class ResumeTestData {
                 new ListSection("С 2013 года: разработка проектов \"Разработка Web приложения\",\"Java Enterprise\", \"Многомодульный maven. Многопоточность. XML (JAXB/StAX). Веб сервисы (JAX-RS/SOAP). Удаленное взаимодействие (JMS/AKKA)\". Организация онлайн стажировок и ведение проектов. Более 1000 выпускников.")
         );
 
-*/
+
         RESUME_4.addContact(ContactType.PHONE, "+7(921)855-04-82");
         RESUME_4.addContact(ContactType.SKYPE, "grigory.kislin");
 /*

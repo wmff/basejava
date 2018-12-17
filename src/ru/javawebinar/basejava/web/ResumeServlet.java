@@ -13,15 +13,10 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-
-//TODO get resume by uuid
-// or not param get all resumes in table
-
 public class ResumeServlet extends HttpServlet {
     private Storage storage = Config.get().getStorage();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -73,5 +68,4 @@ public class ResumeServlet extends HttpServlet {
     private void writeln(HttpServletResponse response, String string) throws IOException {
         response.getWriter().write(string + "\n");
     }
-
 }
