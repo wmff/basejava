@@ -3,6 +3,7 @@ package ru.javawebinar.basejava.storage;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.*;
 import ru.javawebinar.basejava.sql.SqlHelper;
+import ru.javawebinar.basejava.util.JsonParser;
 
 import java.sql.*;
 import java.util.*;
@@ -11,6 +12,11 @@ public class SqlStorage implements Storage {
     private final SqlHelper sqlHelper;
 
     public SqlStorage(String dbUrl, String dbUser, String dbPassword) {
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new IllegalStateException(e);
+        }
         sqlHelper = new SqlHelper(() -> DriverManager.getConnection(dbUrl, dbUser, dbPassword));
     }
 
@@ -87,16 +93,10 @@ public class SqlStorage implements Storage {
                 }
             }
 
-            try (PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM contact WHERE resume_uuid = ?")) {
-                preparedStatement.setString(1, resume.getUuid());
-                preparedStatement.execute();
-            }
+            deleteAttributes(resume, connection, "DELETE FROM contact WHERE resume_uuid = ?");
             insertContacts(resume, connection);
 
-            try (PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM section WHERE resume_uuid = ?")) {
-                preparedStatement.setString(1, resume.getUuid());
-                preparedStatement.execute();
-            }
+            deleteAttributes(resume, connection, "DELETE FROM section WHERE resume_uuid = ?");
             insertSections(resume, connection);
 
             return null;
@@ -148,6 +148,13 @@ public class SqlStorage implements Storage {
         });
     }
 
+    private void deleteAttributes(Resume resume, Connection connection, String sql) throws SQLException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, resume.getUuid());
+            preparedStatement.execute();
+        }
+    }
+
     private void addContact(ResultSet resultSet, Resume resume) throws SQLException {
         String value = resultSet.getString("value");
         if (value != null) {
@@ -159,21 +166,7 @@ public class SqlStorage implements Storage {
         String value = resultSet.getString("value");
         if (value != null) {
             SectionType sectionType = SectionType.valueOf(resultSet.getString("type"));
-            switch (sectionType) {
-                case PERSONAL:
-                case OBJECTIVE:
-                    resume.addSection(sectionType, new TextSection(value));
-                    break;
-                case ACHIEVEMENT:
-                case QUALIFICATIONS:
-                    List<String> items = Arrays.asList(value.split("\n"));
-                    resume.addSection(sectionType, new ListSection(items));
-                    break;
-                case EXPERIENCE:
-                case EDUCATION:
-                    //TODO Org section
-                    break;
-            }
+            resume.addSection(sectionType, JsonParser.read(value, AbstractSection.class));
         }
     }
 
@@ -195,22 +188,7 @@ public class SqlStorage implements Storage {
                 preparedStatement.setString(1, resume.getUuid());
                 SectionType sectionType = entry.getKey();
                 preparedStatement.setString(2, sectionType.name());
-
-                switch (sectionType) {
-                    case PERSONAL:
-                    case OBJECTIVE:
-                        preparedStatement.setString(3, entry.getValue().toString());
-                        break;
-                    case ACHIEVEMENT:
-                    case QUALIFICATIONS:
-                        preparedStatement.setString(3,
-                                String.join("\n", ((ListSection) entry.getValue()).getItems()));
-                        break;
-                    case EXPERIENCE:
-                    case EDUCATION:
-                        //TODO Org section
-                        break;
-                }
+                preparedStatement.setString(3, JsonParser.write(entry.getValue(), AbstractSection.class));
                 preparedStatement.addBatch();
             }
             preparedStatement.executeBatch();
