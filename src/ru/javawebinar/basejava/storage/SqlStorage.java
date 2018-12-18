@@ -112,7 +112,7 @@ public class SqlStorage implements Storage {
                 while (resultSet.next()) {
                     String uuid = resultSet.getString("uuid");
                     String full_name = resultSet.getString("full_name");
-                    Resume resume = map.computeIfAbsent(uuid, u -> new Resume(u, full_name));
+                    map.computeIfAbsent(uuid, u -> new Resume(u, full_name));
                 }
             }
 
@@ -121,9 +121,7 @@ public class SqlStorage implements Storage {
                 while (resultSet.next()) {
                     String uuid = resultSet.getString("resume_uuid");
                     Resume resume = map.get(uuid);
-                    if (uuid.equals(resume.getUuid())) {
-                        addContact(resultSet, resume);
-                    }
+                    addContact(resultSet, resume);
                 }
             }
 
@@ -132,9 +130,7 @@ public class SqlStorage implements Storage {
                 while (resultSet.next()) {
                     String uuid = resultSet.getString("resume_uuid");
                     Resume resume = map.get(uuid);
-                    if (uuid.equals(resume.getUuid())) {
-                        addSection(resultSet, resume);
-                    }
+                    addSection(resultSet, resume);
                 }
             }
             return new ArrayList<>(map.values());
@@ -208,7 +204,7 @@ public class SqlStorage implements Storage {
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
                         preparedStatement.setString(3,
-                                listSection2String(((ListSection) entry.getValue()).getItems()));
+                                String.join("\n", ((ListSection) entry.getValue()).getItems()));
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
@@ -219,13 +215,5 @@ public class SqlStorage implements Storage {
             }
             preparedStatement.executeBatch();
         }
-    }
-
-    private String listSection2String(List<String> list) {
-        StringBuilder content = new StringBuilder();
-        for (String line : list) {
-            content.append(line + "\n");
-        }
-        return content.toString();
     }
 }
