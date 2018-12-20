@@ -1,6 +1,7 @@
 package ru.javawebinar.basejava.web;
 
 import ru.javawebinar.basejava.Config;
+import ru.javawebinar.basejava.model.ContactType;
 import ru.javawebinar.basejava.model.Resume;
 import ru.javawebinar.basejava.storage.Storage;
 
@@ -11,9 +12,29 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class ResumeServlet extends HttpServlet {
-    private Storage storage = Config.get().getStorage();
+    private Storage storage;// = Config.get().getStorage();
+
+    @Override
+    public void init() {
+        storage = Config.get().getStorage();
+    }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        String uuid = request.getParameter("uuid");
+        String fullName = request.getParameter("fullName");
+        Resume resume = storage.get(uuid);
+        resume.setFullName(fullName);
+        for (ContactType type : ContactType.values()) {
+            String value = request.getParameter(type.name());
+            if (value != null && !value.trim().isEmpty()) {
+                resume.addContact(type, value);
+            } else {
+                resume.getContacts().remove(type);
+            }
+        }
+        storage.update(resume);
+        response.sendRedirect("resume");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

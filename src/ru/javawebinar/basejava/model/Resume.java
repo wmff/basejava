@@ -45,6 +45,10 @@ public class Resume implements Comparable<Resume>, Serializable {
         return fullName;
     }
 
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
     public void addContact(ContactType type, String value) {
         Objects.requireNonNull(value, "value required not null");
         contacts.put(type, value);
@@ -80,27 +84,27 @@ public class Resume implements Comparable<Resume>, Serializable {
             switch (type) {
                 case PHONE:
                     typeLink = "tel:";
-                    iconLink = "<img src='img/phone-32.png'>";
+                    iconLink = "<img src='img/phone-32.png' alt='phone logo'>";
                     break;
                 case SKYPE:
                     typeLink = "skype:";
-                    iconLink = "<img src='img/social-skype-outline.png'>";
+                    iconLink = "<img src='img/social-skype-outline.png' alt='skype logo'>";
                     break;
                 case EMAIL:
                     typeLink = "mailto:";
-                    iconLink = "<img src='img/email-32.png'>";
+                    iconLink = "<img src='img/email-32.png' alt='mail logo'>";
                     break;
                 case LINKEDIN:
-                    iconLink = "<img src='img/social-linkedin-outline.png'>";
+                    iconLink = "<img src='img/social-linkedin-outline.png' alt='linkedin logo'>";
                     break;
                 case GITHUB:
-                    iconLink = "<img src='img/social-github-outline.png'>";
+                    iconLink = "<img src='img/social-github-outline.png' alt='github logo'>";
                     break;
                 case STACKOVERFLOW:
-                    iconLink = "<img src='img/Stackoverflow.png'>";
+                    iconLink = "<img src='img/Stackoverflow.png' alt='stackoverflow logo'>";
                     break;
                 default:
-                    iconLink = "<img src='img/37-browser-streamline-window.png'>";
+                    iconLink = "<img src='img/37-browser-streamline-window.png' alt='url logo'>";
             }
             return "<a href='" + typeLink + contact + "'>" + iconLink + contact + "</a>";
         }
