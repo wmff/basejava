@@ -13,20 +13,19 @@
 <section>
     <form method="post" action="resume" enctype="application/x-www-form-urlencoded">
         <input type="hidden" name="uuid" value="${resume.uuid}">
-        <dl>
-            <dt>Имя:</dt>
-            <dd><input type="text" name="fullName" size="50" value="${resume.fullName}"></dd>
-            <h3>Контакты:</h3><<
-            <c:forEach var="type" items="<%=ContactType.values()%>">
-                <dl>
-                    <dt>${type.title}</dt>
-                    <dd><input type="text" name="${type.name()}" value="${resume.getContact(type)}"></dd>
-                </dl>
-            </c:forEach>
-            <hr/>
-            <button type="submit">save</button>
-            <button onclick="window.history.back()">cancel</button>
-        </dl>
+        <label>Имя:
+            <input type="text" name="fullName" size="50" value="${resume.fullName}">
+        </label>
+        <h3>Контакты:</h3>
+        <c:forEach var="type" items="<%=ContactType.values()%>">
+            <label>${type.title}
+                <input type="text" name="${type.name()}" value="${resume.getContact(type)}">
+            </label>
+            <br/>
+        </c:forEach>
+        <hr/>
+        <button type="submit">save</button>
+        <button onclick="window.history.back()">cancel</button>
     </form>
 </section>
 <jsp:include page="fragments/footer.jsp"/>

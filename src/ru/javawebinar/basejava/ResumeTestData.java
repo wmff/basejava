@@ -1,6 +1,11 @@
 package ru.javawebinar.basejava;
 
 import ru.javawebinar.basejava.model.*;
+import ru.javawebinar.basejava.util.DateUtil;
+
+import java.time.Month;
+
+import static ru.javawebinar.basejava.util.DateUtil.NOW;
 
 public class ResumeTestData {
     private static final String FULL_NAME = "Григорий Кислин";
@@ -31,22 +36,22 @@ public class ResumeTestData {
                 new ListSection("achivement1",
                         "achivement2")
         );
-        /*
+
         RESUME_1.addSection(SectionType.QUALIFICATIONS,
                 new ListSection("JEE AS: GlassFish (v2.1, v3), OC4J, JBoss, Tomcat, Jetty, WebLogic, WSO2",
                         "Version control: Subversion, Git, Mercury, ClearCase, Perforce",
                         "DB: PostgreSQL(наследование, pgplsql, PL/Python), Redis (Jedis), H2, Oracle, MySQL, SQLite, MS SQL, HSQLDB"
                 )
         );
-/*
+
         RESUME_1.addSection(SectionType.EXPERIENCE,
                 new OrganizationSection(
                         new Organization("Org1", "https://url",
                                 new Organization.Position(DateUtil.of(2014, Month.OCTOBER), DateUtil.of(2014, Month.DECEMBER), "pos1", "descr1"),
                                 new Organization.Position(DateUtil.of(2014, Month.OCTOBER), DateUtil.of(2014, Month.DECEMBER), "pos1", "descr1")
                         ),
-                        new Organization("Org2", "https://url2",
-                                new Organization.Position(DateUtil.of(2014, Month.OCTOBER), DateUtil.of(2014, Month.DECEMBER), "pos1", "descr1")
+                        new Organization("Org2", "",
+                                new Organization.Position(DateUtil.of(2014, Month.OCTOBER), NOW, "pos1", "descr1")
                         )
                 )
         );
@@ -54,15 +59,15 @@ public class ResumeTestData {
                 new OrganizationSection(
                         new Organization("Org1", "https://url",
                                 new Organization.Position(DateUtil.of(2014, Month.OCTOBER), DateUtil.of(2014, Month.DECEMBER), "pos1", "descr1"),
-                                new Organization.Position(DateUtil.of(2014, Month.OCTOBER), DateUtil.of(2014, Month.DECEMBER), "pos1", "descr1")
+                                new Organization.Position(DateUtil.of(2014, Month.OCTOBER), NOW, "pos1", "descr1")
                         ),
                         new Organization("Org2", "https://url2",
-                                new Organization.Position(DateUtil.of(2014, Month.OCTOBER), DateUtil.of(2014, Month.DECEMBER), "pos1", "descr1")
+                                new Organization.Position(DateUtil.of(2014, Month.OCTOBER), NOW, "Qpos1", "Qdescr1")
                         )
                 )
         );
 
-*/
+
         RESUME_2.addContact(ContactType.PHONE, "+7(921)855-04-82");
         RESUME_2.addContact(ContactType.SKYPE, "grigory.kislin");
 //        RESUME_2.addContact(ContactType.EMAIL, "gkislin@yandex.ru");

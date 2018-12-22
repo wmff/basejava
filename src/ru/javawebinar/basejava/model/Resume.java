@@ -66,49 +66,8 @@ public class Resume implements Comparable<Resume>, Serializable {
         return contacts;
     }
 
-    public Map<ContactType, String> getContactsHtml() {
-        Map<ContactType, String> result = new EnumMap<>(ContactType.class);
-        contacts.forEach((key, value) -> result.put(key, getContactHtml(key)));
-        return result;
-    }
-
     public String getContact(ContactType type) {
         return contacts.get(type);
-    }
-
-    public String getContactHtml(ContactType type) {
-        String contact = contacts.get(type);
-        if (contact != null) {
-            String typeLink = "";
-            String iconLink;
-            switch (type) {
-                case PHONE:
-                    typeLink = "tel:";
-                    iconLink = "<img src='img/phone-32.png' alt='phone logo'>";
-                    break;
-                case SKYPE:
-                    typeLink = "skype:";
-                    iconLink = "<img src='img/social-skype-outline.png' alt='skype logo'>";
-                    break;
-                case EMAIL:
-                    typeLink = "mailto:";
-                    iconLink = "<img src='img/email-32.png' alt='mail logo'>";
-                    break;
-                case LINKEDIN:
-                    iconLink = "<img src='img/social-linkedin-outline.png' alt='linkedin logo'>";
-                    break;
-                case GITHUB:
-                    iconLink = "<img src='img/social-github-outline.png' alt='github logo'>";
-                    break;
-                case STACKOVERFLOW:
-                    iconLink = "<img src='img/Stackoverflow.png' alt='stackoverflow logo'>";
-                    break;
-                default:
-                    iconLink = "<img src='img/37-browser-streamline-window.png' alt='url logo'>";
-            }
-            return "<a href='" + typeLink + contact + "'>" + iconLink + contact + "</a>";
-        }
-        return "";
     }
 
     public void addSection(SectionType type, AbstractSection abstractSection) {
