@@ -33,7 +33,9 @@
             <c:when test="${sectionEntry.key.name() == 'QUALIFICATIONS' || sectionEntry.key.name() == 'ACHIEVEMENT'}">
                 <ul>
                     <c:forEach var="item" items="<%=((ListSection) sectionEntry.getValue()).getItems()%>">
-                        <li>${item}</li>
+                        <c:if test="${item.length() != 0}">
+                            <li>${item}</li>
+                        </c:if>
                     </c:forEach>
                 </ul>
             </c:when>
@@ -61,8 +63,6 @@
             </c:when>
         </c:choose>
     </c:forEach>
-
-    </p>
 </section>
 <jsp:include page="fragments/footer.jsp"/>
 </body>

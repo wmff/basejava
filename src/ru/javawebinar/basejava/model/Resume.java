@@ -24,6 +24,7 @@ public class Resume implements Comparable<Resume>, Serializable {
     private final Map<SectionType, AbstractSection> sections = new EnumMap<>(SectionType.class);
 
     public Resume() {
+        this("", "");
     }
 
     public Resume(String fullName) {
@@ -35,6 +36,26 @@ public class Resume implements Comparable<Resume>, Serializable {
         Objects.requireNonNull(fullName, "fullName required not null");
         this.uuid = uuid;
         this.fullName = fullName;
+        initSections();
+    }
+
+    private void initSections() {
+        for (SectionType sectionType : SectionType.values()) {
+            switch (sectionType) {
+                case PERSONAL:
+                case OBJECTIVE:
+                    this.addSection(sectionType, new TextSection(""));
+                    break;
+                case ACHIEVEMENT:
+                case QUALIFICATIONS:
+                    this.addSection(sectionType, new ListSection(""));
+                    break;
+                case EXPERIENCE:
+                case EDUCATION:
+                    this.addSection(sectionType, new OrganizationSection());
+                    break;
+            }
+        }
     }
 
     public String getUuid() {

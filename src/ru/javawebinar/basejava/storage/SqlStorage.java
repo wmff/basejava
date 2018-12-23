@@ -46,7 +46,7 @@ public class SqlStorage implements Storage {
             try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM resume WHERE uuid = ?")) {
                 preparedStatement.setString(1, uuid);
                 ResultSet resultSet = preparedStatement.executeQuery();
-                while (!resultSet.next()) {
+                if (!resultSet.next()) {
                     throw new NotExistStorageException(uuid);
                 }
                 resume = new Resume(resultSet.getString("uuid"), resultSet.getString("full_name"));
