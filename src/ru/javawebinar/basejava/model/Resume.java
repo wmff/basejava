@@ -52,7 +52,9 @@ public class Resume implements Comparable<Resume>, Serializable {
                     break;
                 case EXPERIENCE:
                 case EDUCATION:
-                    this.addSection(sectionType, new OrganizationSection());
+                    this.addSection(sectionType, new OrganizationSection(
+                            new Organization("", "", new Organization.Position())
+                    ));
                     break;
             }
         }

@@ -2,8 +2,6 @@ package ru.javawebinar.basejava.util;
 
 import ru.javawebinar.basejava.model.ContactType;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -47,10 +45,5 @@ public class HtmlUtil {
             return "<a href='" + typeLink + contact + "'>" + iconLink + contact + "</a>";
         }
         return "";
-    }
-
-    public static String formatDate(LocalDate date) {
-        DateTimeFormatter formatters = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-        return date.format(formatters);
     }
 }

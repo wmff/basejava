@@ -3,23 +3,18 @@ package ru.javawebinar.basejava.web;
 import ru.javawebinar.basejava.Config;
 import ru.javawebinar.basejava.model.*;
 import ru.javawebinar.basejava.storage.Storage;
+import ru.javawebinar.basejava.util.DateUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ResumeServlet extends HttpServlet {
-    private Storage storage;// = Config.get().getStorage();
-
-    @Override
-    public void init() {
-        storage = Config.get().getStorage();
-    }
+    private Storage storage = Config.get().getStorage();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         request.setCharacterEncoding("UTF-8");
@@ -51,14 +46,31 @@ public class ResumeServlet extends HttpServlet {
                     break;
                 case ACHIEVEMENT:
                 case QUALIFICATIONS:
-                    List<String> items = Arrays.stream(request.getParameterValues(sectionType.name()))
-                            .filter(value -> value != null && !value.isEmpty())
-                            .collect(Collectors.toList());
-                    resume.addSection(sectionType, new ListSection(items));
+                    resume.addSection(sectionType, new ListSection(request.getParameter(sectionType.name()).split("\n")));
                     break;
                 case EXPERIENCE:
                 case EDUCATION:
-                    resume.addSection(sectionType, new OrganizationSection());
+                    List<Organization> organizations = new ArrayList<>();
+                    String[] urls = request.getParameterValues(sectionType.name() + "URL");
+                    String[] values = request.getParameterValues(sectionType.name());
+                    for (int i = 0; i < values.length; i++) {
+                        String name = values[i];
+                        if (name != null && !name.isEmpty()) {
+                            List<Organization.Position> positions = new ArrayList<>();
+                            String pfx = sectionType.name() + i;
+                            String[] startDates = request.getParameterValues(pfx + "dateBegin");
+                            String[] endDates = request.getParameterValues(pfx + "dateEnd");
+                            String[] titles = request.getParameterValues(pfx + "title");
+                            String[] descriptions = request.getParameterValues(pfx + "description");
+                            for (int j = 0; j < titles.length; j++) {
+                                if (titles[j] != null && !titles[j].isEmpty()) {
+                                    positions.add(new Organization.Position(DateUtil.parse(startDates[j]), DateUtil.parse(endDates[j]), titles[j], descriptions[j]));
+                                }
+                            }
+                            organizations.add(new Organization(new Link(name, urls[i]), positions));
+                        }
+                    }
+                    resume.addSection(sectionType, new OrganizationSection(organizations));
                     break;
                 default:
                     throw new IllegalArgumentException();
