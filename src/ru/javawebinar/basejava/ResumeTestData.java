@@ -57,6 +57,7 @@ public class ResumeTestData {
         RESUME_1.addSection(SectionType.EDUCATION,
                 new OrganizationSection(
                         new Organization("Org1", "https://url",
+                                new Organization.Position(DateUtil.of(2014, Month.OCTOBER), DateUtil.of(2014, Month.DECEMBER), "pos1", "descr1"),
                                 new Organization.Position(DateUtil.of(2014, Month.OCTOBER), DateUtil.of(2014, Month.DECEMBER), "pos1", "descr1")
                         ),
                         new Organization("Org2", "https://url2",
