@@ -3,6 +3,7 @@ package ru.javawebinar.basejava.model;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class ListSection extends AbstractSection {
     private static final long serialVersionUID = 1L;
@@ -22,7 +23,9 @@ public class ListSection extends AbstractSection {
     }
 
     public List<String> getItems() {
-        return items;
+        return items.stream()
+                .filter(value -> value != null && !value.isEmpty())
+                .collect(Collectors.toList());
     }
 
     @Override

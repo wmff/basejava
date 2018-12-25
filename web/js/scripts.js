@@ -1,17 +1,37 @@
-function addPosition(sectionType, counterIndex) {
+function addOrganization(sectionType, counterIndex) {
+    let containerOrgs = document.getElementById("containerOrgs" + sectionType);
+    let divContOrg = document.createElement("div");
+    divContOrg.id = "containerOrg" + sectionType + counterIndex;
+    containerOrgs.appendChild(divContOrg);
 
+    addOrgField("containerOrg", sectionType, counterIndex, "<b>Наименование организации</b>", "");
+    addOrgField("containerOrg", sectionType, counterIndex, "URL", "URL");
 
-    addPositionDateField(sectionType, counterIndex, "Дата начала", "dateBegin");
-    addPositionDateField(sectionType, counterIndex, "Дата окончания", "dateEnd");
+     let divCont = document.createElement("div");
+     divCont.id = "container" + sectionType + counterIndex;
+     divContOrg.appendChild(divCont);
 
-    addPositionField(sectionType, counterIndex, "Должность", "title");
-    addPositionField(sectionType, counterIndex, "Описание", "description");
+     addPosition(sectionType, counterIndex+1);
+     let link = document.createElement("a");
+     link.href = "#" + sectionType + counterIndex;
+     link.className = "btn btn-primary mb-2";
+     link.setAttribute("onclick", `addPosition('${sectionType}', ${counterIndex+1})`);
+     link.innerText = "добавить позицию";
+     divContOrg.appendChild(link);
 }
 
-function addPositionDateField(sectionType, counterIndex, textLabel, addText) {
-    let container = document.getElementById("container" + sectionType + counterIndex);
+function addPosition(sectionType, counterIndex) {
+    addPositionDateField("container", sectionType, counterIndex-1, "Дата начала", "dateBegin");
+    addPositionDateField("container", sectionType, counterIndex-1, "Дата окончания", "dateEnd");
+
+    addPositionField("container", sectionType, counterIndex-1, "Должность", "title");
+    addPositionField("container", sectionType, counterIndex-1, "Описание", "description");
+}
+
+function addPositionDateField(prefix, sectionType, counterIndex, textLabel, addText) {
+    let container = document.getElementById(prefix + sectionType + counterIndex);
     let label = document.createElement("label");
-    label.textContent = textLabel;
+    label.innerHTML = textLabel;
     label.htmlFor = sectionType + counterIndex + addText;
     let input = document.createElement("input");
     input.className = "form-control";
@@ -23,16 +43,30 @@ function addPositionDateField(sectionType, counterIndex, textLabel, addText) {
     container.appendChild(input);
 }
 
-function addPositionField(sectionType, counterIndex, textLabel, addText) {
-    let container = document.getElementById("container" + sectionType + counterIndex);
+function addPositionField(prefix, sectionType, counterIndex, textLabel, addText) {
+    let container = document.getElementById(prefix + sectionType + counterIndex);
     let labelPosition = document.createElement("label");
-    labelPosition.textContent = textLabel;
+    labelPosition.innerHTML = textLabel;
     labelPosition.htmlFor = sectionType + counterIndex + addText;
     let inputPosition = document.createElement("input");
     inputPosition.className = "form-control";
     inputPosition.id = sectionType + counterIndex + addText;
     inputPosition.type = "text";
     inputPosition.name = sectionType + counterIndex + addText;
+    container.appendChild(labelPosition);
+    container.appendChild(inputPosition);
+}
+
+function addOrgField(prefix, sectionType, counterIndex, textLabel, addText) {
+    let container = document.getElementById(prefix + sectionType + counterIndex);
+    let labelPosition = document.createElement("label");
+    labelPosition.innerHTML = textLabel;
+    labelPosition.htmlFor = sectionType + addText;
+    let inputPosition = document.createElement("input");
+    inputPosition.className = "form-control";
+    inputPosition.id = sectionType + addText;
+    inputPosition.type = "text";
+    inputPosition.name = sectionType + addText;
     container.appendChild(labelPosition);
     container.appendChild(inputPosition);
 }

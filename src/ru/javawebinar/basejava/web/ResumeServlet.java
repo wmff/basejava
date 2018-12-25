@@ -53,29 +53,30 @@ public class ResumeServlet extends HttpServlet {
                     List<Organization> organizations = new ArrayList<>();
                     String[] urls = request.getParameterValues(sectionType.name() + "URL");
                     String[] values = request.getParameterValues(sectionType.name());
-                    for (int i = 0; i < values.length; i++) {
-                        String name = values[i];
-                        if (name != null && !name.isEmpty()) {
-                            List<Organization.Position> positions = new ArrayList<>();
-                            String pfx = sectionType.name() + i;
-                            String[] startDates = request.getParameterValues(pfx + "dateBegin");
-                            String[] endDates = request.getParameterValues(pfx + "dateEnd");
-                            String[] titles = request.getParameterValues(pfx + "title");
-                            String[] descriptions = request.getParameterValues(pfx + "description");
-                            for (int j = 0; j < titles.length; j++) {
-                                if (titles[j] != null && !titles[j].isEmpty()) {
-                                    positions.add(new Organization.Position(DateUtil.parse(startDates[j]), DateUtil.parse(endDates[j]), titles[j], descriptions[j]));
+                    if (values.length > 1) {
+                        for (int i = 0; i < values.length; i++) {
+                            String name = values[i];
+                            if (name != null && !name.isEmpty()) {
+                                List<Organization.Position> positions = new ArrayList<>();
+                                String pfx = sectionType.name() + i;
+                                String[] startDates = request.getParameterValues(pfx + "dateBegin");
+                                String[] endDates = request.getParameterValues(pfx + "dateEnd");
+                                String[] titles = request.getParameterValues(pfx + "title");
+                                String[] descriptions = request.getParameterValues(pfx + "description");
+                                for (int j = 0; j < titles.length; j++) {
+                                    if (titles[j] != null && !titles[j].isEmpty()) {
+                                        positions.add(new Organization.Position(DateUtil.parse(startDates[j]), DateUtil.parse(endDates[j]), titles[j], descriptions[j]));
+                                    }
                                 }
+                                organizations.add(new Organization(new Link(name, urls[i]), positions));
                             }
-                            organizations.add(new Organization(new Link(name, urls[i]), positions));
                         }
+                        resume.addSection(sectionType, new OrganizationSection(organizations));
                     }
-                    resume.addSection(sectionType, new OrganizationSection(organizations));
                     break;
                 default:
                     throw new IllegalArgumentException();
             }
-
         }
         if (isNewResume) {
             storage.save(resume);
@@ -101,7 +102,7 @@ public class ResumeServlet extends HttpServlet {
                 return;
             case "view":
             case "edit":
-                resume = uuid != null ? storage.get(uuid) : new Resume();
+                resume = (uuid != null) ? storage.get(uuid) : new Resume();
                 break;
             default:
                 throw new IllegalArgumentException("Action " + action + " id illegal");

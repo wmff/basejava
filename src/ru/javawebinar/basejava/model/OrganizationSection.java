@@ -3,6 +3,7 @@ package ru.javawebinar.basejava.model;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class OrganizationSection extends AbstractSection {
     private static final long serialVersionUID = 1L;
@@ -22,6 +23,10 @@ public class OrganizationSection extends AbstractSection {
     }
 
     public List<Organization> getOrganizations() {
+        return organizations.stream().filter(organization -> organization != null && !organization.getName().getName().trim().isEmpty()).collect(Collectors.toList());
+    }
+
+    public List<Organization> getAllOrganizations() {
         return organizations;
     }
 

@@ -9,16 +9,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
           integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-            crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
-            integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
-            crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
-            integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
-            crossorigin="anonymous"></script>
-    <script src="js/scripts.js"></script>
+    <jsp:include page="fragments/head.jsp"/>
     <jsp:useBean id="resume" type="ru.javawebinar.basejava.model.Resume" scope="request"/>
     <title>редактирвоание резюме ${resume.fullName}</title>
 </head>
@@ -64,54 +55,82 @@
                                     <hr/>
                                 </c:when>
                                 <c:when test="${sectionType.name() == 'EXPERIENCE' || sectionType.name() == 'EDUCATION'}">
-                                    <% List<Organization> organizations = ((OrganizationSection) section).getOrganizations(); %>
-                                    <c:forEach var="organization"
-                                               items="<%=organizations%>"
-                                               varStatus="counter">
-                                        <label for="${sectionType}"><b>Наименование организации</b></label>
-                                        <input class="form-control" type="text" id="${sectionType}"
-                                               name="${sectionType}"
-                                               value="${organization.name.name}"/>
-                                        <label for="${sectionType}URL">URL</label>
-                                        <input class="form-control" type="text" id="${sectionType}URL"
-                                               name="${sectionType}URL"
-                                               value="${organization.name.url}"/>
-                                        <div id="container${sectionType}${counter.index}">
-                                        <c:forEach var="position" items="${organization.positions}">
-                                            <jsp:useBean id="position"
-                                                         type="ru.javawebinar.basejava.model.Organization.Position"/>
+                                    <% List<Organization> organizations = ((OrganizationSection) section).getAllOrganizations(); %>
+                                    <div id="containerOrgs${sectionType}">
+                                        <c:forEach var="organization"
+                                                   items="<%=organizations%>"
+                                                   varStatus="counter">
+                                            <div id="containerOrg${sectionType}${counter.index}">
+                                                <label for="${sectionType}"><b>Наименование организации</b></label>
+                                                <input class="form-control" type="text" id="${sectionType}"
+                                                       name="${sectionType}"
+                                                       value="${organization.name.name}"/>
+                                                <label for="${sectionType}URL">URL</label>
+                                                <input class="form-control" type="text" id="${sectionType}URL"
+                                                       name="${sectionType}URL"
+                                                       value="${organization.name.url}"/>
+                                                <div id="container${sectionType}${counter.index}">
+                                                    <c:forEach var="position" items="${organization.positions}"
+                                                               varStatus="counterPos">
+                                                        <jsp:useBean id="position"
+                                                                     type="ru.javawebinar.basejava.model.Organization.Position"/>
 
-                                                <label for="${sectionType}${counter.index}dateBegin">Дата начала</label>
-                                                <input class="form-control" type="text"
-                                                       id="${sectionType}${counter.index}dateBegin"
-                                                       name="${sectionType}${counter.index}dateBegin" size=10
-                                                       value="<%=DateUtil.format(position.getDateBegin())%>"
-                                                       placeholder="MM/yyyy">
-                                                <label for="${sectionType}${counter.index}dateEnd">Дата
-                                                    окончания</label>
-                                                <input class="form-control" type="text"
-                                                       id="${sectionType}${counter.index}dateEnd"
-                                                       name="${sectionType}${counter.index}dateEnd"
-                                                       value="<%=DateUtil.format(position.getDateEnd())%>"
-                                                       placeholder="MM/yyyy">
+                                                        <label for="${sectionType}${counter.index}dateBegin">Дата
+                                                            начала</label>
+                                                        <input class="form-control" type="text"
+                                                               id="${sectionType}${counter.index}dateBegin"
+                                                               name="${sectionType}${counter.index}dateBegin" size=10
+                                                               value="<%=DateUtil.format(position.getDateBegin())%>"
+                                                               placeholder="MM/yyyy"
+                                                               width="234">
+                                                        <script>
+                                                            $('#${sectionType}${counter.index}dateBegin').datepicker({
+                                                                uiLibrary: 'bootstrap4',
+                                                                weekStartDay: 1,
+                                                                locale: 'ru-ru',
+                                                                format: 'mm/yyyy'
+                                                            });
+                                                        </script>
 
-                                                <label for="${sectionType}${counter.index}title">Должность</label>
-                                                <input class="form-control" type="text"
-                                                       id="${sectionType}${counter.index}title"
-                                                       name="${sectionType}${counter.index}title"
-                                                       value="${position.title}">
-                                                <label for="${sectionType}${counter.index}description">Описание</label>
-                                                <input class="form-control" type="text"
-                                                       id="${sectionType}${counter.index}description"
-                                                       name="${sectionType}${counter.index}description"
-                                                       value="${position.description}">
 
+                                                        <label for="${sectionType}${counter.index}dateEnd">Дата
+                                                            окончания</label>
+                                                        <input class="form-control" type="text"
+                                                               id="${sectionType}${counter.index}dateEnd"
+                                                               name="${sectionType}${counter.index}dateEnd"
+                                                               value="<%=DateUtil.format(position.getDateEnd())%>"
+                                                               placeholder="MM/yyyy"
+                                                               width="234">
+
+
+                                                        <label for="${sectionType}${counter.index}title">Должность</label>
+                                                        <input class="form-control" type="text"
+                                                               id="${sectionType}${counter.index}title"
+                                                               name="${sectionType}${counter.index}title"
+                                                               value="${position.title}">
+                                                        <label for="${sectionType}${counter.index}description">Описание</label>
+                                                        <input class="form-control" type="text"
+                                                               id="${sectionType}${counter.index}description"
+                                                               name="${sectionType}${counter.index}description"
+                                                               value="${position.description}">
+                                                        <div>
+                                                            <a href="#${sectionType}${counter.index}"
+                                                               class="btn btn-primary mb-2"
+                                                               onclick="addPosition('${sectionType}', '${counterPos.index+1}')">добавить
+                                                                позицию</a>
+                                                        </div>
+                                                    </c:forEach>
+                                                </div>
+
+                                            </div>
+                                            <div>
+                                                <a href="#${sectionType}${counter.index}" class="btn btn-primary mb-2"
+                                                   onclick="addOrganization('${sectionType}', ${counter.index+1})">добавить
+                                                    организацию</a>
+                                            </div>
                                         </c:forEach>
-                                        </div>
-                                        <a href="#${sectionType}${counter.index}"
-                                           onclick="addPosition('${sectionType}', '${counter.index}')">добавить
-                                            позицию</a>
-                                    </c:forEach>
+                                    </div>
+
                                 </c:when>
                             </c:choose>
                         </c:forEach>
