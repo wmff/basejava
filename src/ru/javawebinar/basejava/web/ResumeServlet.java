@@ -53,7 +53,7 @@ public class ResumeServlet extends HttpServlet {
                     List<Organization> organizations = new ArrayList<>();
                     String[] urls = request.getParameterValues(sectionType.name() + "URL");
                     String[] values = request.getParameterValues(sectionType.name());
-                    if (values.length > 1) {
+                    if (values != null && values.length > 0) {
                         for (int i = 0; i < values.length; i++) {
                             String name = values[i];
                             if (name != null && !name.isEmpty()) {

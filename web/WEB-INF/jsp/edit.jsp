@@ -75,32 +75,47 @@
                                                         <jsp:useBean id="position"
                                                                      type="ru.javawebinar.basejava.model.Organization.Position"/>
 
-                                                        <label for="${sectionType}${counter.index}dateBegin">Дата
+                                                        <label for="${sectionType}${counter.index}${counterPos.index}dateBegin">Дата
                                                             начала</label>
-                                                        <input class="form-control" type="text"
-                                                               id="${sectionType}${counter.index}dateBegin"
+                                                        <input class="form-control date" type="text"
+                                                               id="${sectionType}${counter.index}${counterPos.index}dateBegin"
                                                                name="${sectionType}${counter.index}dateBegin" size=10
                                                                value="<%=DateUtil.format(position.getDateBegin())%>"
                                                                placeholder="MM/yyyy"
-                                                               width="234">
-                                                        <script>
-                                                            $('#${sectionType}${counter.index}dateBegin').datepicker({
-                                                                uiLibrary: 'bootstrap4',
-                                                                weekStartDay: 1,
-                                                                locale: 'ru-ru',
-                                                                format: 'mm/yyyy'
-                                                            });
-                                                        </script>
+                                                               width="234" readonly>
 
 
-                                                        <label for="${sectionType}${counter.index}dateEnd">Дата
+                                                        <label for="${sectionType}${counter.index}${counterPos.index}dateEnd">Дата
                                                             окончания</label>
-                                                        <input class="form-control" type="text"
-                                                               id="${sectionType}${counter.index}dateEnd"
-                                                               name="${sectionType}${counter.index}dateEnd"
-                                                               value="<%=DateUtil.format(position.getDateEnd())%>"
-                                                               placeholder="MM/yyyy"
-                                                               width="234">
+                                                        <div id="${sectionType}${counter.index}${counterPos.index}boxEnd">
+                                                            <input class="form-control date" type="text"
+                                                                   id="${sectionType}${counter.index}${counterPos.index}dateEnd"
+                                                                   name="${sectionType}${counter.index}dateEnd"
+                                                                   value="<%=DateUtil.format(position.getDateEnd())%>"
+                                                                   placeholder="MM/yyyy"
+                                                                   width="234" readonly>
+                                                        </div>
+                                                        <c:choose>
+                                                            <c:when test='<%=DateUtil.format(position.getDateEnd()).equals("Сейчас")%>'>
+                                                                <script>
+                                                                    $('#${sectionType}${counter.index}${counterPos.index}boxEnd').hide();
+                                                                    <c:set var="checked" value="checked"/>
+                                                                </script>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <script>
+                                                                    $('#${sectionType}${counter.index}${counterPos.index}boxEnd').show();
+                                                                    <c:set var="checked" value=""/>
+                                                                </script>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                        <div class="form-check">
+                                                            <input id="${sectionType}${counter.index}${counterPos.index}checkbox" ${checked}
+                                                                   class="form-check-input" type="checkbox"
+                                                                   onclick="showHideDateEnd('${sectionType}', '${counter.index}', '${counterPos.index}')">
+                                                            <label for="${sectionType}${counter.index}${counterPos.index}checkbox">по
+                                                                настоящее время</label>
+                                                        </div>
 
 
                                                         <label for="${sectionType}${counter.index}title">Должность</label>
@@ -113,15 +128,20 @@
                                                                id="${sectionType}${counter.index}description"
                                                                name="${sectionType}${counter.index}description"
                                                                value="${position.description}">
-                                                        <div>
-                                                            <a href="#${sectionType}${counter.index}"
-                                                               class="btn btn-primary mb-2"
-                                                               onclick="addPosition('${sectionType}', '${counterPos.index+1}')">добавить
-                                                                позицию</a>
-                                                        </div>
-                                                    </c:forEach>
-                                                </div>
 
+                                                        <img src="img/edit.png" width="0" height="0"
+                                                             onload="datepicker('${sectionType}', ${counter.index}, ${counterPos.index})"/>
+                                                        <c:set var="cntPos" value="${counterPos}"/>
+                                                    </c:forEach>
+
+                                                </div>
+                                                <div>
+                                                    <a href="#${sectionType}${counter.index}"
+                                                       id="${sectionType}${counter.index}addBtn"
+                                                       class="btn btn-primary mb-2"
+                                                       onclick="addPosition('${sectionType}', ${counter.index+1}, ${cntPos.index+1})">добавить
+                                                        позицию</a>
+                                                </div>
                                             </div>
                                             <div>
                                                 <a href="#${sectionType}${counter.index}" class="btn btn-primary mb-2"
