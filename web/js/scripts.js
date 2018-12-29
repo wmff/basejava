@@ -13,7 +13,7 @@ function addOrganization(sectionType, counterIndex) {
 
     let link = document.createElement("a");
     link.href = "#" + sectionType + counterIndex;
-    link.setAttribute("id", sectionType + counterIndex+'addBtn');
+    link.setAttribute("id", sectionType + counterIndex + 'addBtn');
     link.className = "btn btn-primary mb-2";
     link.innerText = "добавить позицию";
     divContOrg.appendChild(link);
@@ -25,29 +25,50 @@ function addPosition(sectionType, counterIndex, counterPosIndex) {
     addPositionDateField("container", sectionType, counterIndex - 1, counterPosIndex, "Дата начала", "dateBegin");
     addPositionDateField("container", sectionType, counterIndex - 1, counterPosIndex, "Дата окончания", "dateEnd");
 
+    let divFormCheck = document.createElement("div");
+
+    divFormCheck.className = "form-check";
+    let inputCheck = document.createElement("input");
+    inputCheck.id = sectionType + (counterIndex-1) + counterPosIndex + "checkbox";
+    inputCheck.className = "form-check-input";
+    inputCheck.type = "checkbox";
+    inputCheck.setAttribute("onclick", `showHideDateEnd('${sectionType}${counterIndex-1}${counterPosIndex}')` );
+    let labelCheck = document.createElement("label");
+    labelCheck.htmlFor = sectionType + (counterIndex-1) + counterPosIndex + "checkbox";
+    labelCheck.innerHTML = "по настоящее время";
+    let container = document.getElementById("container" + sectionType + (counterIndex - 1));
+    divFormCheck.append(inputCheck);
+    divFormCheck.append(labelCheck);
+    container.append(divFormCheck);
+
     addPositionField("container", sectionType, counterIndex - 1, counterPosIndex, "Должность", "title");
     addPositionField("container", sectionType, counterIndex - 1, counterPosIndex, "Описание", "description");
 
-    document.getElementById(sectionType+(counterIndex-1)+'addBtn')
-        .setAttribute("onclick", `addPosition('${sectionType}', ${counterIndex}, ${counterPosIndex+1})`);
+    document.getElementById(sectionType + (counterIndex - 1) + 'addBtn')
+        .setAttribute("onclick", `addPosition('${sectionType}', ${counterIndex}, ${counterPosIndex + 1})`);
 }
 
 function addPositionDateField(prefix, sectionType, counterIndex, counterPosIndex, textLabel, addText) {
+    let divBox = document.createElement("div");
+    if (addText === 'dateEnd') {
+        divBox.id = sectionType + counterIndex + counterPosIndex+"boxEnd";
+    }
     let container = document.getElementById(prefix + sectionType + counterIndex);
     let label = document.createElement("label");
     label.innerHTML = textLabel;
     label.htmlFor = sectionType + counterIndex + counterPosIndex + addText;
     let input = document.createElement("input");
-    input.className = "form-control";
+    input.className = "form-control date";
     input.id = sectionType + counterIndex + counterPosIndex + addText;
     input.type = "text";
     input.name = sectionType + counterIndex + addText;
     input.placeholder = "MM/yyyy";
     input.setAttribute("width", "234");
     input.setAttribute("readonly", "");
-    container.appendChild(label);
-    container.appendChild(input);
-    datepicker(sectionType, counterIndex, counterPosIndex);
+    divBox.appendChild(label);
+    divBox.appendChild(input);
+    container.appendChild(divBox);
+    datepicker(sectionType + counterIndex + counterPosIndex);
 }
 
 function addPositionField(prefix, sectionType, counterIndex, counterPosIndex, textLabel, addText) {
@@ -78,10 +99,9 @@ function addOrgField(prefix, sectionType, counterIndex, textLabel, addText) {
     container.appendChild(inputPosition);
 }
 
-function showHideDateEnd(sectionType, counterIndex, counterPosIndex) {
-    let chkBox = '#' + sectionType + counterIndex + counterPosIndex + 'checkbox';
-    let boxEnd = '#' + sectionType + counterIndex + counterPosIndex + 'boxEnd';
-    if ($(chkBox).is(":checked")) {
+function showHideDateEnd(id) {
+    let boxEnd = '#' + id + 'boxEnd';
+    if ($('#' + id + 'checkbox').is(":checked")) {
         $(boxEnd).hide();
         $(boxEnd).find(".date").val("Сейчас");
     } else {
@@ -89,19 +109,16 @@ function showHideDateEnd(sectionType, counterIndex, counterPosIndex) {
     }
 }
 
-function datepicker(sectionType, counterIndex, counterPosIndex) {
-    $('#' + sectionType + counterIndex + counterPosIndex + 'dateBegin')
-        .datepicker({
-            uiLibrary: 'bootstrap4',
-            weekStartDay: 1,
-            locale: 'ru-ru',
-            format: 'mm/yyyy'
-        });
-    $('#' + sectionType + counterIndex + counterPosIndex + 'dateEnd').datepicker({
+function datepicker(id) {
+    let paramsDatepicker = {
         uiLibrary: 'bootstrap4',
         weekStartDay: 1,
         locale: 'ru-ru',
         format: 'mm/yyyy'
-    });
+    };
+    $('#' + id + 'dateBegin')
+        .datepicker(paramsDatepicker);
+    $('#' + id + 'dateEnd')
+        .datepicker(paramsDatepicker);
 }
 

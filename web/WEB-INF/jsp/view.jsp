@@ -39,7 +39,7 @@
                     <c:choose>
                         <c:when test="${sectionEntry.key.name() == 'OBJECTIVE' || sectionEntry.key.name() == 'PERSONAL'}">
                             <% String section = ((TextSection) sectionEntry.getValue()).getContent(); %>
-                            <c:if test="<%=section != null && !section.isEmpty()%>">
+                            <c:if test="<%=!HtmlUtil.isEmpty(section)%>">
                                 <h3>${sectionEntry.key.title}</h3>
                                 <%=section%>
                             </c:if>
@@ -47,20 +47,18 @@
                         <c:when test="${sectionEntry.key.name() == 'QUALIFICATIONS' || sectionEntry.key.name() == 'ACHIEVEMENT'}">
                             <% java.util.List<String> items = ((ListSection) sectionEntry.getValue()).getItems();
                             %>
-                            <c:if test="<%=items.size()!=0%>">
+                            <c:if test="<%=items.size() != 0%>">
                                 <h3>${sectionEntry.key.title}</h3>
                                 <ul>
                                     <c:forEach var="item" items="<%=items%>">
-                                        <c:if test="${item.length() !=0}">
-                                            <li>${item}</li>
-                                        </c:if>
+                                        <li>${item}</li>
                                     </c:forEach>
                                 </ul>
                             </c:if>
                         </c:when>
                         <c:when test="${sectionEntry.key.name() == 'EXPERIENCE' || sectionEntry.key.name() == 'EDUCATION'}">
                             <% List<Organization> organizations = ((OrganizationSection) sectionEntry.getValue()).getOrganizations(); %>
-                            <c:if test="<%=organizations != null && organizations.size() != 0%>">
+                            <c:if test="<%=organizations.size() != 0%>">
                                 <h3>${sectionEntry.key.title}</h3>
                                 <c:forEach var="organization"
                                            items="<%=organizations%>">

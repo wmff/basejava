@@ -4,6 +4,7 @@ import ru.javawebinar.basejava.Config;
 import ru.javawebinar.basejava.model.*;
 import ru.javawebinar.basejava.storage.Storage;
 import ru.javawebinar.basejava.util.DateUtil;
+import ru.javawebinar.basejava.util.HtmlUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -39,45 +40,51 @@ public class ResumeServlet extends HttpServlet {
         }
 
         for (SectionType sectionType : SectionType.values()) {
-            switch (sectionType) {
-                case PERSONAL:
-                case OBJECTIVE:
-                    resume.addSection(sectionType, new TextSection(request.getParameter(sectionType.name())));
-                    break;
-                case ACHIEVEMENT:
-                case QUALIFICATIONS:
-                    resume.addSection(sectionType, new ListSection(request.getParameter(sectionType.name()).split("\n")));
-                    break;
-                case EXPERIENCE:
-                case EDUCATION:
-                    List<Organization> organizations = new ArrayList<>();
-                    String[] urls = request.getParameterValues(sectionType.name() + "URL");
-                    String[] values = request.getParameterValues(sectionType.name());
-                    if (values != null && values.length > 0) {
-                        for (int i = 0; i < values.length; i++) {
-                            String name = values[i];
-                            if (name != null && !name.isEmpty()) {
-                                List<Organization.Position> positions = new ArrayList<>();
-                                String pfx = sectionType.name() + i;
-                                String[] startDates = request.getParameterValues(pfx + "dateBegin");
-                                String[] endDates = request.getParameterValues(pfx + "dateEnd");
-                                String[] titles = request.getParameterValues(pfx + "title");
-                                String[] descriptions = request.getParameterValues(pfx + "description");
-                                for (int j = 0; j < titles.length; j++) {
-                                    if (titles[j] != null && !titles[j].isEmpty()) {
-                                        positions.add(new Organization.Position(DateUtil.parse(startDates[j]), DateUtil.parse(endDates[j]), titles[j], descriptions[j]));
+            String value = request.getParameter(sectionType.name());
+            String[] values = request.getParameterValues(sectionType.name());
+            if (HtmlUtil.isEmpty(value) && values.length < 2) {
+                resume.getSections().remove(sectionType);
+            } else {
+                switch (sectionType) {
+                    case PERSONAL:
+                    case OBJECTIVE:
+                        resume.addSection(sectionType, new TextSection(request.getParameter(sectionType.name())));
+                        break;
+                    case ACHIEVEMENT:
+                    case QUALIFICATIONS:
+                        resume.addSection(sectionType, new ListSection(request.getParameter(sectionType.name()).split("\n")));
+                        break;
+                    case EXPERIENCE:
+                    case EDUCATION:
+                        List<Organization> organizations = new ArrayList<>();
+                        String[] urls = request.getParameterValues(sectionType.name() + "URL");
+                        if (values != null && values.length > 0) {
+                            for (int i = 0; i < values.length; i++) {
+                                String name = values[i];
+                                if (!HtmlUtil.isEmpty(name)) {
+                                    List<Organization.Position> positions = new ArrayList<>();
+                                    String prefix = sectionType.name() + i;
+                                    String[] startDates = request.getParameterValues(prefix + "dateBegin");
+                                    String[] endDates = request.getParameterValues(prefix + "dateEnd");
+                                    String[] titles = request.getParameterValues(prefix + "title");
+                                    String[] descriptions = request.getParameterValues(prefix + "description");
+                                    for (int j = 0; j < titles.length; j++) {
+                                        if (!HtmlUtil.isEmpty(titles[j])) {
+                                            positions.add(new Organization.Position(DateUtil.parse(startDates[j]), DateUtil.parse(endDates[j]), titles[j], descriptions[j]));
+                                        }
                                     }
+                                    organizations.add(new Organization(new Link(name, urls[i]), positions));
                                 }
-                                organizations.add(new Organization(new Link(name, urls[i]), positions));
                             }
+                            resume.addSection(sectionType, new OrganizationSection(organizations));
                         }
-                        resume.addSection(sectionType, new OrganizationSection(organizations));
-                    }
-                    break;
-                default:
-                    throw new IllegalArgumentException();
+                        break;
+                    default:
+                        throw new IllegalArgumentException();
+                }
             }
         }
+
         if (isNewResume) {
             storage.save(resume);
         } else {

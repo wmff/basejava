@@ -1,5 +1,4 @@
 <%@ page import="java.util.List" %>
-<%@ page import="ru.javawebinar.basejava.util.HtmlUtil" %>
 <%@ page import="ru.javawebinar.basejava.model.*" %>
 <%@ page import="ru.javawebinar.basejava.util.DateUtil" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
@@ -77,13 +76,14 @@
 
                                                         <label for="${sectionType}${counter.index}${counterPos.index}dateBegin">Дата
                                                             начала</label>
+                                                        <div>
                                                         <input class="form-control date" type="text"
                                                                id="${sectionType}${counter.index}${counterPos.index}dateBegin"
                                                                name="${sectionType}${counter.index}dateBegin" size=10
                                                                value="<%=DateUtil.format(position.getDateBegin())%>"
                                                                placeholder="MM/yyyy"
                                                                width="234" readonly>
-
+                                                        </div>
 
                                                         <label for="${sectionType}${counter.index}${counterPos.index}dateEnd">Дата
                                                             окончания</label>
@@ -112,7 +112,7 @@
                                                         <div class="form-check">
                                                             <input id="${sectionType}${counter.index}${counterPos.index}checkbox" ${checked}
                                                                    class="form-check-input" type="checkbox"
-                                                                   onclick="showHideDateEnd('${sectionType}', '${counter.index}', '${counterPos.index}')">
+                                                                   onclick="showHideDateEnd('${sectionType}${counter.index}${counterPos.index}')">
                                                             <label for="${sectionType}${counter.index}${counterPos.index}checkbox">по
                                                                 настоящее время</label>
                                                         </div>
@@ -130,7 +130,7 @@
                                                                value="${position.description}">
 
                                                         <img src="img/edit.png" width="0" height="0"
-                                                             onload="datepicker('${sectionType}', ${counter.index}, ${counterPos.index})"/>
+                                                             onload="datepicker('${sectionType}${counter.index}${counterPos.index}')"/>
                                                         <c:set var="cntPos" value="${counterPos}"/>
                                                     </c:forEach>
 
