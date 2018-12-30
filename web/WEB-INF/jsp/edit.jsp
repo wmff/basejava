@@ -68,7 +68,7 @@
                                                 <input class="form-control" type="text" id="${sectionType}URL"
                                                        name="${sectionType}URL"
                                                        value="${organization.name.url}"/>
-                                                <div id="container${sectionType}${counter.index}">
+                                                <div id="container${sectionType}${counter.index}" style="margin-left: 2em;">
                                                     <c:forEach var="position" items="${organization.positions}"
                                                                varStatus="counterPos">
                                                         <jsp:useBean id="position"
@@ -132,6 +132,7 @@
                                                         <img src="img/edit.png" width="0" height="0"
                                                              onload="datepicker('${sectionType}${counter.index}${counterPos.index}')"/>
                                                         <c:set var="cntPos" value="${counterPos}"/>
+                                                        <hr/>
                                                     </c:forEach>
 
                                                 </div>

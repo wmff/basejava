@@ -44,6 +44,7 @@ function addPosition(sectionType, counterIndex, counterPosIndex) {
     addPositionField("container", sectionType, counterIndex - 1, counterPosIndex, "Должность", "title");
     addPositionField("container", sectionType, counterIndex - 1, counterPosIndex, "Описание", "description");
 
+    container.append(document.createElement("hr"));
     document.getElementById(sectionType + (counterIndex - 1) + 'addBtn')
         .setAttribute("onclick", `addPosition('${sectionType}', ${counterIndex}, ${counterPosIndex + 1})`);
 }

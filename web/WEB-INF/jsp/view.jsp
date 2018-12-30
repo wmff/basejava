@@ -25,8 +25,9 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col">
-                <h2>${resume.fullName} <a href="resume?uuid=${resume.uuid}&action=edit"><img src="img/edit.png"
-                                                                                             alt="edit"></a></h2>
+                <h1 class="display-3">${resume.fullName} <a href="resume?uuid=${resume.uuid}&action=edit"><img
+                        src="img/edit.png"
+                        alt="edit"></a></h1>
                 <c:forEach var="contactEntry" items="${HtmlUtil.formatContacts(resume.contacts)}">
                     <jsp:useBean id="contactEntry"
                                  type="java.util.Map.Entry<ru.javawebinar.basejava.model.ContactType, java.lang.String>"/>
@@ -40,7 +41,7 @@
                         <c:when test="${sectionEntry.key.name() == 'OBJECTIVE' || sectionEntry.key.name() == 'PERSONAL'}">
                             <% String section = ((TextSection) sectionEntry.getValue()).getContent(); %>
                             <c:if test="<%=!HtmlUtil.isEmpty(section)%>">
-                                <h3>${sectionEntry.key.title}</h3>
+                                <h1 class="display-5">${sectionEntry.key.title}</h1>
                                 <%=section%>
                             </c:if>
                         </c:when>
@@ -48,7 +49,7 @@
                             <% java.util.List<String> items = ((ListSection) sectionEntry.getValue()).getItems();
                             %>
                             <c:if test="<%=items.size() != 0%>">
-                                <h3>${sectionEntry.key.title}</h3>
+                                <h1 class="display-5">${sectionEntry.key.title}</h1>
                                 <ul>
                                     <c:forEach var="item" items="<%=items%>">
                                         <li>${item}</li>
@@ -59,7 +60,8 @@
                         <c:when test="${sectionEntry.key.name() == 'EXPERIENCE' || sectionEntry.key.name() == 'EDUCATION'}">
                             <% List<Organization> organizations = ((OrganizationSection) sectionEntry.getValue()).getOrganizations(); %>
                             <c:if test="<%=organizations.size() != 0%>">
-                                <h3>${sectionEntry.key.title}</h3>
+                                <h1 class="display-5">${sectionEntry.key.title}</h1>
+
                                 <c:forEach var="organization"
                                            items="<%=organizations%>">
                                     <c:set var="organizationName" value="${organization.name.name}"/>
@@ -67,24 +69,32 @@
                                         <c:set var="organizationName"
                                                value="<a href='${organization.name.url}'>${organization.name.name}</a>"/>
                                     </c:if>
-                                    <h5>${organizationName}</h5>
-                                    <c:forEach var="position" items="${organization.positions}">
-                                        <jsp:useBean id="position"
-                                                     type="ru.javawebinar.basejava.model.Organization.Position"/>
-                                        <c:set var="endDate" value="${DateUtil.format(position.dateEnd)}"/>
-                                        <c:if test="${endDate == '01-01-3000'}">
-                                            <c:set var="endDate" value="по настоящее время"/>
-                                        </c:if>
-                                        ${DateUtil.format(position.dateBegin)} - ${endDate}
-                                        <br/>
-                                        ${position.title} <br/>
-                                        ${position.description}<br/>
-                                    </c:forEach>
+                                    <div class="card" style="width: 50rem;">
+                                        <div class="card-header">${organizationName}</div>
+                                        <div class="card-body">
+
+                                            <c:forEach var="position" items="${organization.positions}">
+                                                <jsp:useBean id="position"
+                                                             type="ru.javawebinar.basejava.model.Organization.Position"/>
+                                                <c:set var="endDate" value="${DateUtil.format(position.dateEnd)}"/>
+                                                <c:if test="${endDate == '01-01-3000'}">
+                                                    <c:set var="endDate" value="по настоящее время"/>
+                                                </c:if>
+                                                <div class="card-title">${DateUtil.format(position.dateBegin)}
+                                                    - ${endDate} - <b>${position.title}</b></div>
+                                                <p class="card-text">${position.description}</p>
+                                            </c:forEach>
+
+                                        </div>
+                                    </div>
+                                    <br/>
                                 </c:forEach>
+
                             </c:if>
                         </c:when>
                     </c:choose>
                 </c:forEach>
+                <a href="#" type="cancel" onclick="window.history.back()" class="btn btn-primary mb-2">Назад</a>
             </div>
         </div>
     </div>
