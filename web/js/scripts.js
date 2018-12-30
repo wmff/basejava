@@ -1,103 +1,120 @@
 function addOrganization(sectionType, counterIndex) {
-    let containerOrgs = document.getElementById("containerOrgs" + sectionType);
-    let divContOrg = document.createElement("div");
-    divContOrg.id = "containerOrg" + sectionType + counterIndex;
-    containerOrgs.appendChild(divContOrg);
+    let containerOrgs = $("#containerOrgs" + sectionType);
 
-    addOrgField("containerOrg", sectionType, counterIndex, "<b>Наименование организации</b>", "");
-    addOrgField("containerOrg", sectionType, counterIndex, "URL", "URL");
+    let divContainerOrg = $("<div/>", {
+        id: "containerOrg" + sectionType + counterIndex,
 
-    let divCont = document.createElement("div");
-    divCont.id = "container" + sectionType + counterIndex;
-    divContOrg.appendChild(divCont);
+    });
 
-    let link = document.createElement("a");
-    link.href = "#" + sectionType + counterIndex;
-    link.setAttribute("id", sectionType + counterIndex + 'addBtn');
-    link.className = "btn btn-primary mb-2";
-    link.innerText = "добавить позицию";
-    divContOrg.appendChild(link);
+    containerOrgs.append(divContainerOrg);
+
+    addInputField("containerOrg", sectionType, counterIndex, -1, "<b>Наименование организации</b>", "");
+    addInputField("containerOrg", sectionType, counterIndex, -1, "URL", "URL");
+
+    let divContainer = $("<div/>", {
+        id: "container" + sectionType + counterIndex,
+    });
+    divContainerOrg.append(divContainer);
+
+
+    let link = $("<a/>", {
+        href: "#" + sectionType + counterIndex,
+        id: sectionType + counterIndex + 'addBtn',
+        "class": "btn btn-primary mb-2",
+        html: "добавить позицию",
+    });
+    divContainer.append(link);
 
     addPosition(sectionType, counterIndex + 1, 0);
+
+    document.getElementById(sectionType + (counterIndex - 1) + 'addOrgBtn')
+        .setAttribute("onclick", `addOrganization('${sectionType}', ${counterIndex + 1})`);
+
 }
 
 function addPosition(sectionType, counterIndex, counterPosIndex) {
     addPositionDateField("container", sectionType, counterIndex - 1, counterPosIndex, "Дата начала", "dateBegin");
     addPositionDateField("container", sectionType, counterIndex - 1, counterPosIndex, "Дата окончания", "dateEnd");
 
-    let divFormCheck = document.createElement("div");
+    let divFormCheck = $("<div/>", {
+        "class": "form-check",
+    });
+    let inputCheck = $("<input/>", {
+        id: sectionType + (counterIndex - 1) + counterPosIndex + "checkbox",
+        "class": "form-check-input",
+        type: 'checkbox',
+        onclick: `showHideDateEnd('${sectionType}${counterIndex - 1}${counterPosIndex}')`,
 
-    divFormCheck.className = "form-check";
-    let inputCheck = document.createElement("input");
-    inputCheck.id = sectionType + (counterIndex-1) + counterPosIndex + "checkbox";
-    inputCheck.className = "form-check-input";
-    inputCheck.type = "checkbox";
-    inputCheck.setAttribute("onclick", `showHideDateEnd('${sectionType}${counterIndex-1}${counterPosIndex}')` );
-    let labelCheck = document.createElement("label");
-    labelCheck.htmlFor = sectionType + (counterIndex-1) + counterPosIndex + "checkbox";
-    labelCheck.innerHTML = "по настоящее время";
-    let container = document.getElementById("container" + sectionType + (counterIndex - 1));
+    });
+    let labelCheck = $("<label/>" , {
+        htmlFor: sectionType + (counterIndex - 1) + counterPosIndex + "checkbox",
+        html: "по настоящее время",
+    });
+    let container = $("#container" + sectionType + (counterIndex - 1));
+
     divFormCheck.append(inputCheck);
     divFormCheck.append(labelCheck);
     container.append(divFormCheck);
 
-    addPositionField("container", sectionType, counterIndex - 1, counterPosIndex, "Должность", "title");
-    addPositionField("container", sectionType, counterIndex - 1, counterPosIndex, "Описание", "description");
+    addInputField("container", sectionType, counterIndex - 1, counterPosIndex, "Должность", "title");
+    addInputField("container", sectionType, counterIndex - 1, counterPosIndex, "Описание", "description");
 
-    container.append(document.createElement("hr"));
+    $("<hr/>").appendTo(container);
+
     document.getElementById(sectionType + (counterIndex - 1) + 'addBtn')
         .setAttribute("onclick", `addPosition('${sectionType}', ${counterIndex}, ${counterPosIndex + 1})`);
 }
 
 function addPositionDateField(prefix, sectionType, counterIndex, counterPosIndex, textLabel, addText) {
-    let divBox = document.createElement("div");
-    if (addText === 'dateEnd') {
-        divBox.id = sectionType + counterIndex + counterPosIndex+"boxEnd";
-    }
-    let container = document.getElementById(prefix + sectionType + counterIndex);
-    let label = document.createElement("label");
-    label.innerHTML = textLabel;
-    label.htmlFor = sectionType + counterIndex + counterPosIndex + addText;
-    let input = document.createElement("input");
-    input.className = "form-control date";
-    input.id = sectionType + counterIndex + counterPosIndex + addText;
-    input.type = "text";
-    input.name = sectionType + counterIndex + addText;
-    input.placeholder = "MM/yyyy";
-    input.setAttribute("width", "234");
-    input.setAttribute("readonly", "");
-    divBox.appendChild(label);
-    divBox.appendChild(input);
-    container.appendChild(divBox);
+    let container = '#' + prefix + sectionType + counterIndex;
+    let id = sectionType + counterIndex + counterPosIndex;
+
+    let divBox = addText === 'dateEnd' ? $("<div/>", {
+        id: id + "boxEnd",
+    }) : $("<div/>", {
+        id: id + "boxBegin",
+    });
+
+    divBox.append(createLabel(sectionType + counterIndex + counterPosIndex + addText, textLabel));
+    divBox.append(createInputDate(sectionType + counterIndex + counterPosIndex + addText, sectionType + counterIndex + addText));
+    $(container).append(divBox);
+
     datepicker(sectionType + counterIndex + counterPosIndex);
 }
 
-function addPositionField(prefix, sectionType, counterIndex, counterPosIndex, textLabel, addText) {
-    let container = document.getElementById(prefix + sectionType + counterIndex);
-    let labelPosition = document.createElement("label");
-    labelPosition.innerHTML = textLabel;
-    labelPosition.htmlFor = sectionType + counterIndex + addText;
-    let inputPosition = document.createElement("input");
-    inputPosition.className = "form-control";
-    inputPosition.id = sectionType + counterIndex + addText;
-    inputPosition.type = "text";
-    inputPosition.name = sectionType + counterIndex + addText;
-    container.appendChild(labelPosition);
-    container.appendChild(inputPosition);
+function createLabel(id, textLabel) {
+    return $("<label/>", {
+        for: id,
+        html: textLabel,
+    });
 }
 
-function addOrgField(prefix, sectionType, counterIndex, textLabel, addText) {
-    let container = document.getElementById(prefix + sectionType + counterIndex);
-    let labelPosition = document.createElement("label");
-    labelPosition.innerHTML = textLabel;
-    labelPosition.htmlFor = sectionType + addText;
-    let inputPosition = document.createElement("input");
-    inputPosition.className = "form-control";
-    inputPosition.id = sectionType + addText;
-    inputPosition.type = "text";
-    inputPosition.name = sectionType + addText;
-    container.appendChild(labelPosition);
-    container.appendChild(inputPosition);
+function createInput(id) {
+    return $("<input/>", {
+        "class": "form-control",
+        id: id,
+        type: "text",
+        name: name,
+    });
+}
+
+function createInputDate(id, name) {
+    return $("<input/>", {
+        "class": "form-control date",
+        id: id,
+        type: "text",
+        name: name,
+        placeholder: "MM/yyyy",
+        readonly: true,
+    });
+}
+
+function addInputField(prefix, sectionType, counterIndex, counterPosIndex, textLabel, addText) {
+    let container = '#' + prefix + sectionType + counterIndex;
+    let id = counterPosIndex === -1 ? sectionType + addText : sectionType + counterIndex + addText;
+
+    $(container).append(createLabel(id, textLabel));
+    $(container).append(createInput(id));
 }
 
 function showHideDateEnd(id) {
@@ -115,7 +132,8 @@ function datepicker(id) {
         uiLibrary: 'bootstrap4',
         weekStartDay: 1,
         locale: 'ru-ru',
-        format: 'mm/yyyy'
+        format: 'mm/yyyy',
+        width: '234',
     };
     $('#' + id + 'dateBegin')
         .datepicker(paramsDatepicker);

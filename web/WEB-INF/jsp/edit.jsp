@@ -68,7 +68,8 @@
                                                 <input class="form-control" type="text" id="${sectionType}URL"
                                                        name="${sectionType}URL"
                                                        value="${organization.name.url}"/>
-                                                <div id="container${sectionType}${counter.index}" style="margin-left: 2em;">
+                                                <div id="container${sectionType}${counter.index}"
+                                                     style="margin-left: 2em;">
                                                     <c:forEach var="position" items="${organization.positions}"
                                                                varStatus="counterPos">
                                                         <jsp:useBean id="position"
@@ -76,14 +77,16 @@
 
                                                         <label for="${sectionType}${counter.index}${counterPos.index}dateBegin">Дата
                                                             начала</label>
-                                                        <div>
-                                                        <input class="form-control date" type="text"
-                                                               id="${sectionType}${counter.index}${counterPos.index}dateBegin"
-                                                               name="${sectionType}${counter.index}dateBegin" size=10
-                                                               value="<%=DateUtil.format(position.getDateBegin())%>"
-                                                               placeholder="MM/yyyy"
-                                                               width="234" readonly>
+                                                        <div id="${sectionType}${counter.index}${counterPos.index}boxBegin">
+                                                            <input class="form-control date" type="text"
+                                                                   id="${sectionType}${counter.index}${counterPos.index}dateBegin"
+                                                                   name="${sectionType}${counter.index}dateBegin"
+                                                                   size=10
+                                                                   value="<%=DateUtil.format(position.getDateBegin())%>"
+                                                                   placeholder="MM/yyyy"
+                                                                   width="234" readonly>
                                                         </div>
+
 
                                                         <label for="${sectionType}${counter.index}${counterPos.index}dateEnd">Дата
                                                             окончания</label>
@@ -146,6 +149,7 @@
                                             </div>
                                             <div>
                                                 <a href="#${sectionType}${counter.index}" class="btn btn-primary mb-2"
+                                                   id="${sectionType}${counter.index}addOrgBtn"
                                                    onclick="addOrganization('${sectionType}', ${counter.index+1})">добавить
                                                     организацию</a>
                                             </div>
