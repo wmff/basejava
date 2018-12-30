@@ -147,13 +147,14 @@
                                                         позицию</a>
                                                 </div>
                                             </div>
-                                            <div>
-                                                <a href="#${sectionType}${counter.index}" class="btn btn-primary mb-2"
-                                                   id="${sectionType}${counter.index}addOrgBtn"
-                                                   onclick="addOrganization('${sectionType}', ${counter.index+1})">добавить
-                                                    организацию</a>
-                                            </div>
+                                            <c:set var="cnt" value="${counter}"/>
                                         </c:forEach>
+                                        <div>
+                                            <a href="#${sectionType}${cnt.index}" class="btn btn-primary mb-2"
+                                               id="${sectionType}${counter.index}addOrgBtn"
+                                               onclick="addOrganization('${sectionType}', ${cnt.index+1})">добавить
+                                                организацию</a>
+                                        </div>
                                     </div>
 
                                 </c:when>
